@@ -221,7 +221,6 @@ article.active {
 .h4,
 .h5 {
   color: var(--white-2);
-  text-transform: capitalize;
 }
 
 .h2 { font-size: var(--fs-1); }
@@ -331,7 +330,7 @@ main {
   border-radius: 30px;
 }
 .avatar-box {
-  background: var(--bg-gradient-onyx);
+
   border-radius: 20px;
 }
 
@@ -1275,9 +1274,9 @@ textarea.form-input::-webkit-resizer { display: none; }
     --fs-2: 24px;
     --fs-3: 26px;
     --fs-4: 18px;
-    --fs-6: 15px;
+    --fs-6: 16px;
     --fs-7: 15px;
-    --fs-8: 12px;
+    --fs-8: 14px;
 
   }
 
@@ -1290,7 +1289,7 @@ textarea.form-input::-webkit-resizer { display: none; }
   .sidebar, article {
     width: 520px;
     margin-inline: auto;
-    padding: 30px;
+    padding: 40px;
   }
 
   .article-title {
@@ -1802,7 +1801,7 @@ textarea.form-input::-webkit-resizer { display: none; }
    */
 
   main {
-    max-width: 1200px;
+    max-width: 1500px;
     margin-inline: auto;
     display: flex;
     justify-content: center;
