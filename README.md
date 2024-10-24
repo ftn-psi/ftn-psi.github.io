@@ -23,7 +23,7 @@ Kontaktirajte me na sekulovicFTN@gmail.com ukoliko ste zainteresovani ili imate 
 
 ## Licenca
 
-Ovaj projekat je licenciran pod [The Unlicnence]([[https://choosealicense.com/licenses/unlicense/]).
+Ovaj projekat je licenciran pod [The Unlicense](https://choosealicense.com/licenses/unlicense/).
 
 ## Zahvale
 
