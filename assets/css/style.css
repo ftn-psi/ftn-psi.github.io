@@ -121,7 +121,7 @@
   box-sizing: border-box;
 }
 
-a { text-decoration: none; }
+a { text-decoration: none; color:#ceb15a}
 
 li { list-style: none; }
 
@@ -287,6 +287,12 @@ article.active {
   z-index: -1;
 }
 
+.text-wrap{
+  text-overflow: ellipsis; 
+  overflow: hidden; 
+  white-space: nowrap;
+}
+
 
 
 
@@ -327,7 +333,8 @@ main {
 }
 
 .pfp{
-  border-radius: 30px;
+  border-radius: 100%;
+  background-color: rgb(40, 39, 39);
 }
 .avatar-box {
 
@@ -418,6 +425,30 @@ main {
   font-size: var(--fs-8);
   text-transform: uppercase;
   margin-bottom: 2px;
+}
+
+.contact-item:hover b{
+  color: var(--orange-yellow-crayola);
+}
+
+.contact-item path{
+  fill: white;
+}
+
+.contact-selected b{
+  color: var(--orange-yellow-crayola);
+}
+
+.contact-selected path{
+  fill: var(--orange-yellow-crayola);
+}
+
+.contact-item:hover path{
+  fill: var(--orange-yellow-crayola);
+}
+
+.contact-item:hover{
+  cursor: pointer;
 }
 
 .contact-info :is(.contact-link, time, address) {
@@ -520,7 +551,7 @@ main {
   gap: 20px;
 }
 
-.service-item {
+.service-item{
   position: relative;
   background: var(--border-gradient-onyx);
   padding: 20px;
@@ -528,6 +559,37 @@ main {
   box-shadow: var(--shadow-2);
   z-index: 1;
   user-select: none;
+  transition: transform .2s;
+}
+
+.service-index-item{
+  position: relative;
+  background: var(--border-gradient-onyx);
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-2);
+  z-index: 1;
+  user-select: none;
+  transition: transform .2s;
+}
+
+.service-index-item::before{
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--bg-gradient-jet);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.service-item:hover {
+  transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  color: var(--orange-yellow-crayola);
+  cursor: pointer;
+}
+
+.service-item:hover h4{
+  color: var(--orange-yellow-crayola);
 }
 
 .service-item::before {
@@ -546,6 +608,12 @@ main {
 .service-content-box { text-align: center; }
 
 .service-item-title { margin-bottom: 7px; }
+
+.subject-title{
+  margin-bottom: 7px; 
+  margin-top: 10px;
+  text-align: left;
+}
 
 .service-item-text {
   color: var(--light-gray);
@@ -1839,6 +1907,10 @@ textarea.form-input::-webkit-resizer { display: none; }
   .info-content .name {
     white-space: nowrap;
     text-align: center;
+  }
+
+  .title{
+    user-select: none;
   }
 
   .info-content .title { margin: auto; }
