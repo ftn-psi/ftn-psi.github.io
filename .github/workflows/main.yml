@@ -1,0 +1,38 @@
+name: Fetch FTN posts
+on:
+  workflow_dispatch:        # run manually from Actions tab
+  schedule:
+    - cron: "0 */1 * * *"   # every 6 hours (UTC); adjust as you like
+
+permissions:
+  contents: write           # needed to commit data/ftn_posts.json
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install scraper deps
+        run: |
+          npm init -y >/dev/null
+          npm install node-fetch@3 cheerio@1
+
+      - name: Run scraper
+        run: |
+          node ./assets/js/fetch-ftn-posts.mjs
+
+      - name: Commit JSON (if changed)
+        run: |
+          mkdir -p data
+          git config user.name "github-actions[bot]"
+          git config user.email "actions@github.com"
+          git add data/ftn_posts.json || true
+          git commit -m "chore: update FTN posts JSON" || echo "No changes"
+          git push
