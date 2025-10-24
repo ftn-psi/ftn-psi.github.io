@@ -1879,3 +1879,109 @@ textarea.form-input::-webkit-resizer { display: none; }
   .timeline-text { max-width: 700px; }
 
 }
+
+
+
+/* FTN SLIDE LIVE UPDATE PART: */
+
+/* Layout */
+.ftn-slider {
+  position: relative;
+  max-width: 960px;
+  margin: 24px auto;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  background: #fff;
+}
+.ftn-slides {
+  display: flex;
+  transition: transform 0.45s ease;
+  will-change: transform;
+}
+.ftn-slide {
+  min-width: 100%;
+  box-sizing: border-box;
+  padding: 16px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+}
+
+/* Card content */
+.ftn-card-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #f2f2f2;
+}
+.ftn-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0;
+}
+.ftn-date {
+  font-size: 0.85rem;
+  color: #666;
+}
+.ftn-excerpt {
+  font-size: 0.95rem;
+  color: #222;
+  margin: 8px 0 0;
+}
+.ftn-actions {
+  margin-top: 8px;
+}
+.ftn-btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  background: #0a58ca;
+  color: #fff;
+  font-weight: 600;
+  transition: filter .2s ease;
+}
+.ftn-btn:hover { filter: brightness(1.05); }
+
+/* Nav arrows */
+.ftn-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  width: 40px; height: 40px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: grid; place-items: center;
+}
+.ftn-prev { left: 12px; }
+.ftn-next { right: 12px; }
+.ftn-nav:hover { background: rgba(0,0,0,0.6); }
+
+/* Dots */
+.ftn-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 0; right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.ftn-dot {
+  width: 10px; height: 10px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.ftn-dot.active { background: rgba(0,0,0,0.6); }
+
+/* Small screens */
+@media (max-width: 640px) {
+  .ftn-title { font-size: 1rem; }
+  .ftn-excerpt { font-size: 0.9rem; }
+}

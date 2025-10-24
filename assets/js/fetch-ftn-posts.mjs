@@ -1,63 +1,57 @@
+// --- top of file ---
 import fs from "node:fs";
 import path from "node:path";
 import fetch from "node-fetch";
 import * as cheerio from "cheerio";
 
-const START_URL = "https://ftn.uns.ac.rs/vesti-i-desavanja/";  // FTN news list
-const MAX_PAGES = 3;   // crawl first 3 pages (tune as needed)
-const MAX_ITEMS = 50;  // safety cap
+// FTN unified listing uses Elementor
+const START_URL   = "https://ftn.uns.ac.rs/vesti-i-desavanja/";
+const MAX_ITEMS   = 6;   // we only need latest 5–6
+const MAX_PAGES   = 1;   // latest page is enough
+const USER_AGENT  = "github-actions-ftn-fetch/1.0 (+https://github.com/)";
 
 async function fetchHtml(url) {
-  const res = await fetch(url, { headers: { "user-agent": "github-actions-ftn-fetch" }});
+  const res = await fetch(url, { headers: { "user-agent": USER_AGENT } });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return await res.text();
 }
 
-// Parse a listing page and return [{title, url, date, excerpt, image}]
 function parseListing(html) {
   const $ = cheerio.load(html);
   const items = [];
 
-  $('h3').each((_, h3) => {
-    const a = $(h3).find('a').first();
-    if (!a.length) return;
+  const posts = $('.elementor-posts-container article.elementor-post');
+  posts.each((_, el) => {
+    const $el = $(el);
 
+    const a = $el.find('.elementor-post__title a').first();
     const title = a.text().trim();
-    const url   = a.attr('href');
+    const url   = a.attr('href') || '';
 
-    let excerpt = '';
-    let date = '';
-    let node = $(h3).next();
+    const date  = $el.find('.elementor-post-date').first().text().trim();
 
-    for (let i = 0; i < 6 && node.length; i++) {
-      const text = node.text().trim().replace(/\s+/g, ' ');
-      if (node.is('h3')) break;
-
-      if (!excerpt && text && !/Pročitaj više/i.test(text) && !/\d{2}\.\d{2}\.\d{4}\./.test(text)) {
-        excerpt = text.slice(0, 300);
-      }
-
-      const m = text.match(/\b(\d{2}\.\d{2}\.\d{4})\b/);
-      if (m && !date) date = m[1];
-
-      node = node.next();
+    // excerpt: prefer elementor’s excerpt, else first reasonable paragraph
+    let excerpt = $el.find('.elementor-post__excerpt').text().trim();
+    if (!excerpt) {
+      const p = $el.find('p').first().text().trim();
+      excerpt = p || '';
     }
+    excerpt = excerpt.replace(/\s+/g, ' ').slice(0, 220);
+
+    // image: try elementor thumbnail first, else any <img>
+    let image = $el.find('.elementor-post__thumbnail img').attr('src') || '';
+    if (!image) image = $el.find('img').first().attr('src') || '';
 
     if (title && url) {
-      items.push({ title, url, date, excerpt });
+      items.push({ title, url, date, excerpt, image });
     }
   });
 
-  let nextUrl = null;
-  $('a').each((_, a) => {
-    const t = $(a).text().trim();
-    if (/Sledeće/i.test(t)) {
-      nextUrl = $(a).attr('href') || null;
-    }
-  });
-
+  const nextUrl = null;
   return { items, nextUrl };
 }
+
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 async function crawl() {
   let url = START_URL;
@@ -70,15 +64,16 @@ async function crawl() {
     }
     url = nextUrl;
     if (all.length >= MAX_ITEMS) break;
+    await sleep(500);
   }
   return all;
 }
 
 const posts = await crawl();
 
-// Ensure folder exists and write JSON
+// ---- write JSON (root Pages) ----
 const outDir = path.join(process.cwd(), "data");
 fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(path.join(outDir, "ftn_posts.json"), JSON.stringify(posts, null, 2), "utf8");
 
-console.log(`Saved ${posts.length} posts -> data/ftn_posts.json`);
+console.log(`Saved ${posts.length} posts -> ${path.join(outDir, "ftn_posts.json")}`);
