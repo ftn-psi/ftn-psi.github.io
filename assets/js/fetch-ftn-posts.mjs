@@ -3,7 +3,7 @@ import path from "node:path";
 import fetch from "node-fetch";
 import * as cheerio from "cheerio";
 
-const START_URL = "https://ftn.uns.ac.rs/category/ftn-vesti/"; // FTN news list
+const START_URL = "https://ftn.uns.ac.rs/vesti-i-desavanja/";  // FTN news list
 const MAX_PAGES = 3;   // crawl first 3 pages (tune as needed)
 const MAX_ITEMS = 50;  // safety cap
 
@@ -16,42 +16,47 @@ async function fetchHtml(url) {
 // Parse a listing page and return [{title, url, date, excerpt, image}]
 function parseListing(html) {
   const $ = cheerio.load(html);
-
-  // Works for FTN’s current WP theme: selectors target post cards/titles
-  // (Theme may change; tweak selectors if needed.)
   const items = [];
 
-  $("article, .post, .news, .entry").each((_, el) => {
-    const $el = $(el);
-    const titleEl = $el.find("h1 a, h2 a, .entry-title a").first();
-    const title = titleEl.text().trim();
-    const url = titleEl.attr("href");
+  $('h3').each((_, h3) => {
+    const a = $(h3).find('a').first();
+    if (!a.length) return;
 
-    // date appears near title; grab the nearest time/date text we can find
-    const date =
-      $el.find("time").attr("datetime")?.trim() ||
-      $el.find(".date, .posted-on").text().trim() ||
-      "";
+    const title = a.text().trim();
+    const url   = a.attr('href');
 
-    const excerpt =
-      $el.find(".entry-summary, .excerpt, p").first().text().trim().slice(0, 280);
+    let excerpt = '';
+    let date = '';
+    let node = $(h3).next();
 
-    // optional image
-    const img =
-      $el.find("img").first().attr("src") || "";
+    for (let i = 0; i < 6 && node.length; i++) {
+      const text = node.text().trim().replace(/\s+/g, ' ');
+      if (node.is('h3')) break;
+
+      if (!excerpt && text && !/Pročitaj više/i.test(text) && !/\d{2}\.\d{2}\.\d{4}\./.test(text)) {
+        excerpt = text.slice(0, 300);
+      }
+
+      const m = text.match(/\b(\d{2}\.\d{2}\.\d{4})\b/);
+      if (m && !date) date = m[1];
+
+      node = node.next();
+    }
 
     if (title && url) {
-      items.push({ title, url, date, excerpt, image: img });
+      items.push({ title, url, date, excerpt });
     }
   });
 
-  // Try to discover “next page” link; common WP patterns:
-  const next =
-    $('a.next, a[rel="next"], .nav-previous a, .ast-pagination .next').attr("href") ||
-    $(".pagination a").filter((_, a) => /next|»/i.test($(a).text())).attr("href") ||
-    "";
+  let nextUrl = null;
+  $('a').each((_, a) => {
+    const t = $(a).text().trim();
+    if (/Sledeće/i.test(t)) {
+      nextUrl = $(a).attr('href') || null;
+    }
+  });
 
-  return { items, nextUrl: next || null };
+  return { items, nextUrl };
 }
 
 async function crawl() {
