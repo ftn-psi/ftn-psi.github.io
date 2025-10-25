@@ -179,19 +179,14 @@
                     <h2 class="h2 article-title">TESTING</h2>
                 </header>
 
-                    <!-- PSI FTN posts slider -->
-                    <section class="psi-wrap">
-                    <h2 class="psi-h2">Vesti i dešavanja (FTN)</h2>
-
-                    <div class="psi-slider" id="psi-slider">
+                <!-- PSI FTN posts slider -->
+                <section class="psi-wrap">
+                    <div class="psi-slider psi-compact" id="psi-slider">
                         <div class="psi-track" id="psi-track"></div>
-
-                        <button class="psi-nav psi-prev" aria-label="Prethodna">&#10094;</button>
-                        <button class="psi-nav psi-next" aria-label="Sledeća">&#10095;</button>
-
                         <div class="psi-dots" id="psi-dots"></div>
                     </div>
-                    </section>
+
+                </section>
 
 
                 </section>
@@ -244,41 +239,47 @@
         initSlider(posts.length);
     }
 
-    function initSlider(n){
-        const slider = document.getElementById('psi-slider');
-        const track  = document.getElementById('psi-track');
-        const prev   = slider.querySelector('.psi-prev');
-        const next   = slider.querySelector('.psi-next');
-        const dots   = Array.from(slider.querySelectorAll('.psi-dot'));
-        let i = 0, timer = null;
+function initSlider(n){
+  const slider = document.getElementById('psi-slider');
+  const track  = document.getElementById('psi-track');
+  const dots   = Array.from(slider.querySelectorAll('.psi-dot'));
 
-        function go(k){
-        i = (k + n) % n;
-        track.style.transform = `translateX(-${i*100}%)`;
-        dots.forEach((d,idx)=>d.classList.toggle('active', idx===i));
-        restart();
-        }
-        function restart(){
-        if(timer) clearInterval(timer);
-        timer = setInterval(()=>go(i+1), 8000);
-        }
+  let i = 0, timer = null;
 
-        prev.addEventListener('click', ()=>go(i-1));
-        next.addEventListener('click', ()=>go(i+1));
-        dots.forEach(d => d.addEventListener('click', ()=>go(parseInt(d.dataset.i,10))));
+  function go(k){
+    i = (k + n) % n;
+    track.style.transform = `translateX(-${i*100}%)`;
+    dots.forEach((d,idx)=>d.classList.toggle('active', idx===i));
+    restart();
+  }
 
-        // Swipe (mobile)
-        let sx=null;
-        track.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; }, {passive:true});
-        track.addEventListener('touchend',   e=>{
-        if(sx==null) return;
-        const dx=e.changedTouches[0].clientX - sx; sx=null;
-        if(Math.abs(dx)>40) go(i + (dx<0?1:-1));
-        }, {passive:true});
+  function restart(){
+    if (timer) clearInterval(timer);
+    timer = setInterval(()=>go(i+1), 8000);   // autoplay speed
+  }
 
-        // start
-        go(0);
-    }
+  // Dots navigation
+  dots.forEach(d => d.addEventListener('click', ()=>{
+    const k = parseInt(d.dataset.i, 10);
+    if (!Number.isNaN(k)) go(k);
+  }));
+
+  // Pause on hover (desktop)
+  slider.addEventListener('mouseenter', ()=>{ if (timer) clearInterval(timer); });
+  slider.addEventListener('mouseleave', ()=>{ timer = setInterval(()=>go(i+1), 8000); });
+
+  // Swipe (mobile)
+  let sx = null;
+  track.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, {passive:true});
+  track.addEventListener('touchend',   e => {
+    if (sx == null) return;
+    const dx = e.changedTouches[0].clientX - sx; sx = null;
+    if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1));
+  }, {passive:true});
+
+  go(0);
+}
+
 
     load().catch(err=>{
         console.error(err);

@@ -1878,96 +1878,131 @@ textarea.form-input::-webkit-resizer { display: none; }
 
 
 
-/* ====== Slider (inherits site theme) ====== */
-.psi-slider{
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.1);
-  color: var(--white-2);
-}
+/* Slider container/track stay the same */
 
-.psi-track{
-  display: flex;
-  transition: transform .45s ease;
-  will-change: transform;
-  transform: translate3d(0,0,0);
-}
-
+/* One slide per view */
 .psi-slide{
   flex: 0 0 100%;
   box-sizing: border-box;
-  padding: 16px;
+  padding: 12px 14px;
   display: grid;
-  grid-template-rows: auto 1fr auto;
   gap: 12px;
+  grid-template-rows: auto auto auto; /* mobile: stack */
 }
 
-/* Smaller image */
+/* Two-column from tablet up */
+@media (min-width: 720px){
+  .psi-slide{
+    grid-template-columns: 40% 1fr;  /* LEFT image / RIGHT text */
+    grid-template-rows: auto;        /* rows auto within right column */
+    align-items: start;
+  }
+}
+
+/* LEFT: image container */
+.psi-media { align-self: start; }
 .psi-img{
   display: block;
   width: 100%;
-  aspect-ratio: 16/7;      /* smaller height than 16/9 */
-  object-fit: cover;
+  height: 220px;          /* overall image size control */
+  object-fit: cover;      /* natural look, fills box */
+  object-position: center;
   border-radius: 10px;
-  background: #f2f2f2;     /* fallback */
+  background: #f2f2f2;    /* neutral fallback; inherits well */
 }
 
-/* Text uses site’s font/colors */
+/* RIGHT: content */
+.psi-content{ align-self: start; }
+
 .psi-title{
-  margin: 6px 0 0 0;
+  margin: 0 0 6px 0;
+  color: var(--white-1);
+  line-height: 1.25;
   font-weight: 700;
-  line-height: 1.3;
-  color: var(--white-2);
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.2rem);
 }
+
 .psi-date{
+  color: var(--white-1);
   font-size: .9rem;
   opacity: .8;
+  margin-bottom: 8px;
 }
+
 .psi-excerpt{
-  margin: 6px 0 0 0;
+  margin: 4px 0 0 0;
   line-height: 1.5;
   color: var(--white-2);
+  display: -webkit-box;
+  line-clamp: 4;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.psi-actions{ margin-top: 6px; }
+.psi-actions{ margin-top: 10px; }
 .psi-btn{
   display:inline-block;
-  padding:10px 14px;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:600;
-  transition:filter .2s ease, transform .05s ease;
+  color: var(--vegas-gold);
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: filter .2s ease, transform .05s ease;
 }
-.psi-btn:hover{ filter:brightness(1.1); }
-.psi-btn:active{ transform:translateY(1px); }
+.psi-btn:hover{ filter: brightness(1.08); }
+.psi-btn:active{ transform: translateY(1px); }
 
-.psi-nav{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  width:40px; height:40px;
-  border:none;
-  border-radius:999px;
-  background: rgba(0,0,0,0.3);
-  color:#fff;
-  cursor:pointer;
-  display:grid;
-  place-items:center;
+/* Mobile tweaks: image a bit shorter when stacked */
+@media (max-width: 719.98px){
+  .psi-img{ height: 200px; }
 }
-.psi-prev{ left:12px; }
-.psi-next{ right:12px; }
-.psi-nav:hover{ background: rgba(0,0,0,0.45); }
 
-.psi-dots{
-  position:absolute;
-  bottom:10px; left:0; right:0;
-  display:flex; justify-content:center; gap:8px;
+/* --- SLIDER FIX (keep your current design) --- */
+#psi-slider {
+  position: relative;
+  overflow: hidden;              /* clip overflowing slides */
 }
-.psi-dot{
-  width:10px; height:10px;
-  border-radius:50%;
-  background: rgba(0,0,0,0.25);
-  cursor:pointer;
+
+#psi-track {
+  display: flex !important;      /* lay slides in a single row */
+  flex-wrap: nowrap !important;  /* prevent wrapping to next line */
+  transition: transform .45s ease;
+  will-change: transform;
 }
-.psi-dot.active{ background: rgba(0,0,0,0.6); }
+
+#psi-track > .psi-slide {
+  flex: 0 0 100% !important;     /* exactly one slide per view */
+  box-sizing: border-box;
+}
+
+/* Remove the sidebar/article shadow only within the slider area */
+.psi-wrap article,
+.psi-wrap .sidebar {
+  box-shadow: none !important;
+}
+
+/* ---- SLIDER DOTS FIX ---- */
+.psi-dots {
+  position: absolute;
+  bottom: 12px;             /* move up if hidden */
+  left: 0;
+  right: 0;
+  z-index: 10;              /* make sure they’re above the slides */
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.psi-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);    /* visible on light backgrounds */
+  cursor: pointer;
+  transition: background .3s;
+}
+
+.psi-dot.active { background: rgba(255,255,255,0.9); }
+

@@ -69,7 +69,10 @@
           <li class="contact-item">
 
             <div class="icon-box">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="currentColor" d="M17 19v-8h-2v1h-2v2h2v5h-2v2h6v-2z"/></svg>            </div>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                <path fill="currentColor" d="M17 19v-8h-2v1h-2v2h2v5h-2v2h6v-2z" />
+              </svg>
+            </div>
 
             <div class="contact-info">
               <p class="contact-title">
@@ -82,7 +85,10 @@
           <li class="contact-item">
 
             <div class="icon-box">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="currentColor" d="M19 21h-6v-4a2 2 0 0 1 2-2h2v-2h-4v-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2v2h4Z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                <path fill="currentColor"
+                  d="M19 21h-6v-4a2 2 0 0 1 2-2h2v-2h-4v-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2v2h4Z" />
+              </svg>
             </div>
 
             <div class="contact-info">
@@ -94,7 +100,9 @@
           <li class="contact-item">
 
             <div class="icon-box">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="currentColor" d="M17 11h-4v2h4v2h-3v2h3v2h-4v2h4a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                <path fill="currentColor" d="M17 11h-4v2h4v2h-3v2h3v2h-4v2h4a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2" />
+              </svg>
             </div>
 
             <div class="contact-info">
@@ -106,7 +114,9 @@
           <li class="contact-item">
 
             <div class="icon-box">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="currentColor" d="M17 11v4h-2v-4h-2v6h4v4h2V11z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                <path fill="currentColor" d="M17 11v4h-2v-4h-2v6h4v4h2V11z" />
+              </svg>
             </div>
 
             <div class="contact-info">
@@ -128,7 +138,8 @@
           </li>
 
           <li class="social-item">
-            <a href="https://www.youtube.com/@medijacentarftn7560" target="_blank" rel="noopener noreferrer" class="social-link">
+            <a href="https://www.youtube.com/@medijacentarftn7560" target="_blank" rel="noopener noreferrer"
+              class="social-link">
               <iconify-icon icon="hugeicons:youtube"></iconify-icon>
             </a>
           </li>
@@ -167,9 +178,9 @@
 
         <section class="about-text">
           <p>
-            Ovo je mesto gde možeš lako pronaći sve što ti treba – 
-            skripte, video predavanja i fajlove za lakše učenje. Ako 
-            tražiš linkove do korisnih resursa ili materijala za fakultet, 
+            Ovo je mesto gde možeš lako pronaći sve što ti treba –
+            skripte, video predavanja i fajlove za lakše učenje. Ako
+            tražiš linkove do korisnih resursa ili materijala za fakultet,
             ovde je sve na jednom mestu.
           </p>
 
@@ -179,7 +190,8 @@
           </p>
 
           <p>
-            Organizacija sajta je jednostavna – svaki deo je posvećen određenoj godini, a svaka godina je dalje podeljena po predmetima.
+            Organizacija sajta je jednostavna – svaki deo je posvećen određenoj godini, a svaka godina je dalje
+            podeljena po predmetima.
           </p>
         </section>
 
@@ -263,6 +275,14 @@
 
         </section>
 
+        <section class="psi-wrap">
+          <div class="psi-slider psi-compact" id="psi-slider">
+            <div class="psi-track" id="psi-track"></div>
+            <div class="psi-dots" id="psi-dots"></div>
+          </div>
+        </section>
+
+        
       </article>
 
     </div>
@@ -278,10 +298,93 @@
     - custom js link
   -->
   <script src="./assets/js/script.js"></script>
+  <script>
+    (function () {
+      // IMPORTANT for GitHub Pages under a repo path:
+      // use a relative JSON path so it works at https://user.github.io/repo/
+      const JSON_URL = 'data/ftn_posts.json'; // or 'docs/data/ftn_posts.json' if your Pages source is /docs
 
-  <!--
-    - ionicon link
-  -->
+      const esc = s => String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+      async function load() {
+        const res = await fetch(JSON_URL, { cache: 'no-store' });
+        if (!res.ok) throw new Error('FTN posts not available');
+        const posts = (await res.json() || []).slice(0, 6); // safety cap
+
+        const track = document.getElementById('psi-track');
+        const dotsC = document.getElementById('psi-dots');
+
+        track.innerHTML = posts.map(p => {
+          const img = p.image ? `<img class="psi-img" src="${esc(p.image)}" alt="">` : `<div class="psi-img"></div>`;
+          const date = p.date ? `<div class="psi-date">${esc(p.date)}</div>` : '';
+          const excerpt = p.excerpt ? `<p class="psi-excerpt">${esc(p.excerpt)}</p>` : '';
+          return `<article class="psi-slide">
+            ${img}
+            <div>
+            <h3 class="psi-title">${esc(p.title)}</h3>
+            ${date}
+            ${excerpt}
+            </div>
+            <div class="psi-actions">
+            <a class="psi-btn" href="${p.url}" target="_blank" rel="noopener">Otvorite na FTN sajtu</a>
+            </div>
+        </article>`;
+        }).join('');
+
+        dotsC.innerHTML = posts.map((_, i) => `<div class="psi-dot${i === 0 ? ' active' : ''}" data-i="${i}"></div>`).join('');
+        initSlider(posts.length);
+      }
+
+      function initSlider(n) {
+        const slider = document.getElementById('psi-slider');
+        const track = document.getElementById('psi-track');
+        const dots = Array.from(slider.querySelectorAll('.psi-dot'));
+
+        let i = 0, timer = null;
+
+        function go(k) {
+          i = (k + n) % n;
+          track.style.transform = `translateX(-${i * 100}%)`;
+          dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+          restart();
+        }
+
+        function restart() {
+          if (timer) clearInterval(timer);
+          timer = setInterval(() => go(i + 1), 8000);   // autoplay speed
+        }
+
+        // Dots navigation
+        dots.forEach(d => d.addEventListener('click', () => {
+          const k = parseInt(d.dataset.i, 10);
+          if (!Number.isNaN(k)) go(k);
+        }));
+
+        // Pause on hover (desktop)
+        slider.addEventListener('mouseenter', () => { if (timer) clearInterval(timer); });
+        slider.addEventListener('mouseleave', () => { timer = setInterval(() => go(i + 1), 8000); });
+
+        // Swipe (mobile)
+        let sx = null;
+        track.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+        track.addEventListener('touchend', e => {
+          if (sx == null) return;
+          const dx = e.changedTouches[0].clientX - sx; sx = null;
+          if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1));
+        }, { passive: true });
+
+        go(0);
+      }
+
+
+      load().catch(err => {
+        console.error(err);
+        document.getElementById('psi-track').innerHTML =
+          `<div class="psi-slide"><p style="padding:16px">Nema dostupnih vesti.</p></div>`;
+      });
+    })();
+  </script>
+
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
