@@ -15,19 +15,29 @@ async function fetchHtml(url) {
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return await res.text();
 }
+
 function cleanText(s = "") {
   let t = String(s);
-  // remove custom <eng>...</eng> markers and any HTML tags
-  t = t.replace(/<\/*eng>/gi, "");      // specifically drop <eng> and </eng>
-  t = t.replace(/<[^>]*>/g, "");        // drop all other tags
-  t = t.replace(/\s+/g, " ").trim();    // collapse whitespace
+
+  // OOOOGA BOOOOOGAAAA
   t = t
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'");
+
+  // UUUUU UU AAA AAA UUAAAA UUUU UUU AAA AAA
+  t = t.replace(/<\/?eng\b[^>]*>/gi, "");
+
+  // monkey do monkey break
+  t = t.replace(/<[^>]+>/g, "");
+
+  // OOOOO OOOO AAAAAA AAAAA
+  t = t.replace(/\s+/g, " ").trim();
+
+  // banana :)
   return t;
 }
 
