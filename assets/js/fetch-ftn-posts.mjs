@@ -15,13 +15,12 @@ async function fetchHtml(url) {
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return await res.text();
 }
-// put near the top of the file
 function cleanText(s = "") {
-  // 1) drop any HTML tags like <i>, <em>, <eng>, etc.
-  let t = String(s).replace(/<[^>]*>/g, "");
-  // 2) collapse whitespace
-  t = t.replace(/\s+/g, " ").trim();
-  // 3) optional: decode the most common HTML entities without extra deps
+  let t = String(s);
+  // remove custom <eng>...</eng> markers and any HTML tags
+  t = t.replace(/<\/*eng>/gi, "");      // specifically drop <eng> and </eng>
+  t = t.replace(/<[^>]*>/g, "");        // drop all other tags
+  t = t.replace(/\s+/g, " ").trim();    // collapse whitespace
   t = t
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
@@ -31,6 +30,7 @@ function cleanText(s = "") {
     .replace(/&#39;/g, "'");
   return t;
 }
+
 
 function parseListing(html) {
   const $ = cheerio.load(html);
