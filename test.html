@@ -179,17 +179,19 @@
                     <h2 class="h2 article-title">TESTING</h2>
                 </header>
 
-                <section class="about-text">
-                    <!-- Slider container -->
-                    <div class="ftn-slider" id="ftn-slider">
-                        <div class="ftn-slides" id="ftn-slides"></div>
+                    <!-- PSI FTN posts slider -->
+                    <section class="psi-wrap">
+                    <h2 class="psi-h2">Vesti i dešavanja (FTN)</h2>
 
-                        <button class="ftn-nav ftn-prev" aria-label="Previous">&#10094;</button>
-                        <button class="ftn-nav ftn-next" aria-label="Next">&#10095;</button>
+                    <div class="psi-slider" id="psi-slider">
+                        <div class="psi-track" id="psi-track"></div>
 
-                        <div class="ftn-dots" id="ftn-dots"></div>
+                        <button class="psi-nav psi-prev" aria-label="Prethodna">&#10094;</button>
+                        <button class="psi-nav psi-next" aria-label="Sledeća">&#10095;</button>
+
+                        <div class="psi-dots" id="psi-dots"></div>
                     </div>
-
+                    </section>
 
 
                 </section>
@@ -205,100 +207,89 @@
 
 
 
-  <!--
-    - custom js link
-  -->
-  <script src="./assets/js/script.js"></script>
-
-  <!--
-    - ionicon link
-  -->
     <script>
-        (function () {
-            const SLIDER_ID = 'ftn-slider';
-            const SLIDES_ID = 'ftn-slides';
-            const DOTS_ID = 'ftn-dots';
-            const JSON_URL = '/data/ftn_posts.json'; // if your Pages source is /docs, this still works
+    (function(){
+    // IMPORTANT for GitHub Pages under a repo path:
+    // use a relative JSON path so it works at https://user.github.io/repo/
+    const JSON_URL = 'data/ftn_posts.json'; // or 'docs/data/ftn_posts.json' if your Pages source is /docs
 
-            const esc = s => String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-            async function load() {
-                const res = await fetch(JSON_URL, { cache: 'no-store' });
-                if (!res.ok) throw new Error('Cannot load FTN posts');
-                const posts = await res.json();
+    async function load(){
+        const res = await fetch(JSON_URL, { cache:'no-store' });
+        if(!res.ok) throw new Error('FTN posts not available');
+        const posts = (await res.json() || []).slice(0,6); // safety cap
 
-                const slidesEl = document.getElementById(SLIDES_ID);
-                const dotsEl = document.getElementById(DOTS_ID);
+        const track = document.getElementById('psi-track');
+        const dotsC = document.getElementById('psi-dots');
 
-                // Build slides (image → title → excerpt → button)
-                slidesEl.innerHTML = posts.map(p => {
-                    const img = p.image ? `<img class="ftn-card-img" src="${esc(p.image)}" alt="">` : `<div class="ftn-card-img"></div>`;
-                    const date = p.date ? `<div class="ftn-date">${esc(p.date)}</div>` : '';
-                    const excerpt = p.excerpt ? `<p class="ftn-excerpt">${esc(p.excerpt)}</p>` : '';
-
-                    return `<div class="ftn-slide">
+        track.innerHTML = posts.map(p=>{
+        const img = p.image ? `<img class="psi-img" src="${esc(p.image)}" alt="">` : `<div class="psi-img"></div>`;
+        const date = p.date ? `<div class="psi-date">${esc(p.date)}</div>` : '';
+        const excerpt = p.excerpt ? `<p class="psi-excerpt">${esc(p.excerpt)}</p>` : '';
+        return `<article class="psi-slide">
             ${img}
             <div>
-              <h3 class="ftn-title">${esc(p.title)}</h3>
-              ${date}
-              ${excerpt}
+            <h3 class="psi-title">${esc(p.title)}</h3>
+            ${date}
+            ${excerpt}
             </div>
-            <div class="ftn-actions">
-              <a class="ftn-btn" href="${p.url}" target="_blank" rel="noopener">Otvorite na FTN sajtu</a>
+            <div class="psi-actions">
+            <a class="psi-btn" href="${p.url}" target="_blank" rel="noopener">Otvorite na FTN sajtu</a>
             </div>
-          </div>`;
-                }).join('');
+        </article>`;
+        }).join('');
 
-                // Build dots
-                dotsEl.innerHTML = posts.map((_, i) => `<div class="ftn-dot${i === 0 ? ' active' : ''}" data-i="${i}"></div>`).join('');
+        dotsC.innerHTML = posts.map((_,i)=>`<div class="psi-dot${i===0?' active':''}" data-i="${i}"></div>`).join('');
+        initSlider(posts.length);
+    }
 
-                initSlider(posts.length);
-            }
+    function initSlider(n){
+        const slider = document.getElementById('psi-slider');
+        const track  = document.getElementById('psi-track');
+        const prev   = slider.querySelector('.psi-prev');
+        const next   = slider.querySelector('.psi-next');
+        const dots   = Array.from(slider.querySelectorAll('.psi-dot'));
+        let i = 0, timer = null;
 
-            function initSlider(n) {
-                const slider = document.getElementById(SLIDER_ID);
-                const slides = document.getElementById(SLIDES_ID);
-                const dots = Array.from(document.querySelectorAll('#' + DOTS_ID + ' .ftn-dot'));
-                const prev = slider.querySelector('.ftn-prev');
-                const next = slider.querySelector('.ftn-next');
+        function go(k){
+        i = (k + n) % n;
+        track.style.transform = `translateX(-${i*100}%)`;
+        dots.forEach((d,idx)=>d.classList.toggle('active', idx===i));
+        restart();
+        }
+        function restart(){
+        if(timer) clearInterval(timer);
+        timer = setInterval(()=>go(i+1), 8000);
+        }
 
-                let i = 0, timer = null;
+        prev.addEventListener('click', ()=>go(i-1));
+        next.addEventListener('click', ()=>go(i+1));
+        dots.forEach(d => d.addEventListener('click', ()=>go(parseInt(d.dataset.i,10))));
 
-                function go(idx) {
-                    i = (idx + n) % n;
-                    slides.style.transform = `translateX(-${i * 100}%)`;
-                    dots.forEach((d, k) => d.classList.toggle('active', k === i));
-                    restart();
-                }
-                function restart() {
-                    if (timer) clearInterval(timer);
-                    // autoplay every 7s
-                    timer = setInterval(() => go(i + 1), 7000);
-                }
+        // Pause on hover (desktop)
+        slider.addEventListener('mouseenter', ()=>{ if(timer) clearInterval(timer); });
+        slider.addEventListener('mouseleave', ()=>{ timer = setInterval(()=>go(i+1), 7000); });
 
-                prev.addEventListener('click', () => go(i - 1));
-                next.addEventListener('click', () => go(i + 1));
-                dots.forEach(d => d.addEventListener('click', () => go(parseInt(d.dataset.i, 10))));
+        // Swipe (mobile)
+        let sx=null;
+        track.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; }, {passive:true});
+        track.addEventListener('touchend',   e=>{
+        if(sx==null) return;
+        const dx=e.changedTouches[0].clientX - sx; sx=null;
+        if(Math.abs(dx)>40) go(i + (dx<0?1:-1));
+        }, {passive:true});
 
-                // swipe (mobile)
-                let startX = null;
-                slides.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-                slides.addEventListener('touchend', e => {
-                    if (startX == null) return;
-                    const dx = e.changedTouches[0].clientX - startX;
-                    startX = null;
-                    if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1));
-                }, { passive: true });
+        // start
+        go(0);
+    }
 
-                restart();
-            }
-
-            load().catch(err => {
-                console.error(err);
-                const slides = document.getElementById(SLIDES_ID);
-                slides.innerHTML = `<div class="ftn-slide"><p style="padding:16px">Nema dostupnih vesti.</p></div>`;
-            });
-        })();
+    load().catch(err=>{
+        console.error(err);
+        document.getElementById('psi-track').innerHTML =
+        `<div class="psi-slide"><p style="padding:16px">Nema dostupnih vesti.</p></div>`;
+    });
+    })();
     </script>
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
