@@ -1918,6 +1918,7 @@ textarea.form-input::-webkit-resizer { display: none; }
   margin: 6px 0 0 0;
   font-weight: 700;
   line-height: 1.3;
+  color: var(--white-2);
 }
 .psi-date{
   font-size: .9rem;
@@ -1926,6 +1927,7 @@ textarea.form-input::-webkit-resizer { display: none; }
 .psi-excerpt{
   margin: 6px 0 0 0;
   line-height: 1.5;
+  color: var(--white-2);
 }
 
 .psi-actions{ margin-top: 6px; }
