@@ -15,7 +15,22 @@ async function fetchHtml(url) {
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return await res.text();
 }
-
+// put near the top of the file
+function cleanText(s = "") {
+  // 1) drop any HTML tags like <i>, <em>, <eng>, etc.
+  let t = String(s).replace(/<[^>]*>/g, "");
+  // 2) collapse whitespace
+  t = t.replace(/\s+/g, " ").trim();
+  // 3) optional: decode the most common HTML entities without extra deps
+  t = t
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+  return t;
+}
 
 function parseListing(html) {
   const $ = cheerio.load(html);
@@ -23,16 +38,23 @@ function parseListing(html) {
 
   $('.elementor-posts-container article.elementor-post').each((_, el) => {
     const $el = $(el);
+
+    // Title from anchor text (already plain text)
     const a = $el.find('.elementor-post__title a').first();
-    const title = a.text().trim();
+    const rawTitle = a.text();
+    const title = cleanText(rawTitle);
+
     const url = a.attr('href') || '';
 
-    const date = $el.find('.elementor-post-date').first().text().trim();
+    // Date (keep as-is, just trim)
+    const date = cleanText($el.find('.elementor-post-date').first().text());
 
-    let excerpt = $el.find('.elementor-post__excerpt').text().trim();
-    if (!excerpt) excerpt = $el.find('p').first().text().trim();
-    excerpt = excerpt.replace(/\s+/g, ' ').slice(0, 220);
+    // Excerpt: prefer elementor excerpt, else first <p>, then clean
+    let rawExcerpt = $el.find('.elementor-post__excerpt').first().html();
+    if (!rawExcerpt) rawExcerpt = $el.find('p').first().html() || $el.find('p').first().text();
+    const excerpt = cleanText(rawExcerpt).slice(0, 220);
 
+    // Image
     let image = $el.find('.elementor-post__thumbnail img').attr('src') || '';
     if (!image) image = $el.find('img').first().attr('src') || '';
 
@@ -42,23 +64,6 @@ function parseListing(html) {
   return { items, nextUrl: null };
 }
 
-const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-
-async function crawl() {
-  let url = START_URL;
-  const all = [];
-  for (let i = 0; i < MAX_PAGES && url; i++) {
-    const html = await fetchHtml(url);
-    const { items, nextUrl } = parseListing(html);
-    for (const it of items) {
-      if (all.length < MAX_ITEMS) all.push(it);
-    }
-    url = nextUrl;
-    if (all.length >= MAX_ITEMS) break;
-    await sleep(500);
-  }
-  return all;
-}
 
 const posts = await crawl();
 

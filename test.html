@@ -267,10 +267,6 @@
         next.addEventListener('click', ()=>go(i+1));
         dots.forEach(d => d.addEventListener('click', ()=>go(parseInt(d.dataset.i,10))));
 
-        // Pause on hover (desktop)
-        slider.addEventListener('mouseenter', ()=>{ if(timer) clearInterval(timer); });
-        slider.addEventListener('mouseleave', ()=>{ timer = setInterval(()=>go(i+1), 7000); });
-
         // Swipe (mobile)
         let sx=null;
         track.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; }, {passive:true});
