@@ -1896,6 +1896,7 @@ textarea.form-input::-webkit-resizer { display: none; }
     grid-template-columns: 40% 1fr;  /* LEFT image / RIGHT text */
     grid-template-rows: auto;        /* rows auto within right column */
     align-items: start;
+    user-select: none;
   }
 }
 
@@ -1932,7 +1933,7 @@ textarea.form-input::-webkit-resizer { display: none; }
 .psi-excerpt{
   margin: 4px 0 0 0;
   line-height: 1.5;
-  color: var(--white-2);
+  color: var(--light-gray);
   display: -webkit-box;
   line-clamp: 4;
   -webkit-line-clamp: 4;
