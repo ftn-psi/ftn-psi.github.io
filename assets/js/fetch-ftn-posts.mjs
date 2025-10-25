@@ -55,13 +55,35 @@ function parseListing(html) {
     const excerpt = cleanText(rawExcerpt).slice(0, 220);
 
     // Image
-    let image = $el.find('.elementor-post__thumbnail img').attr('src') || '';
-    if (!image) image = $el.find('img').first().attr('src') || '';
+    let image =
+      $el.find('.elementor-post__thumbnail img').attr('src') ||
+      $el.find('.elementor-post__thumbnail img').attr('data-src') ||
+      ($el.find('.elementor-post__thumbnail img').attr('srcset') || '').split(' ').shift() ||
+      $el.find('img').first().attr('src') ||
+      '';
+
 
     if (title && url) items.push({ title, url, date, excerpt, image });
   });
 
   return { items, nextUrl: null };
+}
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+async function crawl() {
+  let url = START_URL;
+  const all = [];
+  for (let i = 0; i < MAX_PAGES && url; i++) {
+    const html = await fetchHtml(url);
+    const { items, nextUrl } = parseListing(html);
+    for (const it of items) {
+      if (all.length < MAX_ITEMS) all.push(it);
+    }
+    url = nextUrl;
+    if (all.length >= MAX_ITEMS) break;
+    await sleep(500); // optional delay between requests
+  }
+  return all;
 }
 
 
