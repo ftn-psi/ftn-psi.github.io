@@ -2,7 +2,7 @@ name: Fetch FTN posts
 on:
   workflow_dispatch:        # run manually from Actions tab
   schedule:
-    - cron: "0 */1 * * *"   # every 6 hours (UTC); adjust as you like
+    - cron: "0 */3 * * *"   # every 6 hours (UTC); adjust as you like
 
 permissions:
   contents: write           # needed to commit data/ftn_posts.json
