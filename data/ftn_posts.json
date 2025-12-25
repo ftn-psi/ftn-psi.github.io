@@ -1,5 +1,12 @@
 [
   {
+    "title": "Poziv na sastanak",
+    "url": "https://ftn.uns.ac.rs/poziv-na-sastanak/",
+    "date": "25.12.2025",
+    "excerpt": "Pozivamo vas da prisustvujete zajednčkom sastanku Seminara Centra za matematiku i statistiku FTN, UNS i Novosadskog seminara MISANU. Vreme: petak, 26.12.2025. godine u 12hMesto: Ogranak SANU, “Platoneum”, Nikole Pašića 6",
+    "image": "https://ftn.uns.ac.rs/wp-content/uploads/2025/02/baner.jpg"
+  },
+  {
     "title": "ČESTITKA",
     "url": "https://ftn.uns.ac.rs/cestitka/",
     "date": "24.12.2025",
@@ -33,12 +40,5 @@
     "date": "12.12.2025",
     "excerpt": "Doktorske akademske studije – Predavanje iz predmeta Metod naučnog rada Poštovani studenti, Obaveštavamo vas da će prvo predavanje iz predmeta Metod naučnog rada biti održano u sledećem terminu: Subota, 20. decembar 2025",
     "image": "https://ftn.uns.ac.rs/wp-content/uploads/2025/12/predavanje_doktorske-768x543.jpg"
-  },
-  {
-    "title": "Konkurs za četvrti upisni rok na specijalističke, master i doktorske studije",
-    "url": "https://ftn.uns.ac.rs/konkurs-za-cetvrti-upisni-rok-na-specijalisticke-master-i-doktorske-studije/",
-    "date": "11.12.2025",
-    "excerpt": "Konkursi za četvrti upisni rok: SPECIJALISTIČKE AKADEMSKE STUDIJE 2025-26 MASTER AKADEMSKE I MASTER STRUKOVNE STUDIJE 2025-26 DOKTORSKE AKADEMSKE STUDIJE 2025-26",
-    "image": "https://ftn.uns.ac.rs/wp-content/uploads/2025/12/cetvrti-upisni-rok-768x461.jpg"
   }
 ]
