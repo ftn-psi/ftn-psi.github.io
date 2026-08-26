@@ -1,24 +1,10 @@
 [
   {
-    "title": "PRELAZAK I NASTAVAK STUDIJA NA FAKULTETU TEHNIČKIH NAUKA",
-    "url": "https://ftn.uns.ac.rs/prelazak-i-nastavak-studija-na-fakultetu-tehnickih-nauka-2/",
-    "date": "19.08.2026",
-    "excerpt": "Lica koja su zainteresovana za nastavak studija na Fakultetu tehničkih nauka mogu da podnesu dokumentaciju na vrednovanje studijskog programa i priznavanje ispita u periodu od 1. do 10. septembra 2026. godine u vremensko",
-    "image": "https://ftn.uns.ac.rs/wp-content/uploads/2026/01/11.png"
-  },
-  {
     "title": "Praksa – Python QA Automation Engineer",
     "url": "https://ftn.uns.ac.rs/praksa-engpython-qa-automation-engineer-eng/",
     "date": "18.08.2026",
     "excerpt": "U kompaniji Sixsentix otvorene su prijave za program prakse za poziciju Python QA Automation Engineer. Ako te zanima kako se obezbeđuje kvalitet softvera i želiš da svoje znanje programiranja pretvoriš u praktično iskust",
     "image": "https://ftn.uns.ac.rs/wp-content/uploads/2026/08/Python-QA-Automation-Engineer-Internship-768x461.jpg"
-  },
-  {
-    "title": "Poziv za učestvovanje talentovanih srpskih studenata na Međunarodnoj studentskoj praksi u Objedinjenom institutu za nuklearna istraživanja",
-    "url": "https://ftn.uns.ac.rs/medunarodna-studentska-praksa-u-objedinjenom-institutu-za-nuklearna-istrazivanja-u-dubni/",
-    "date": "10.08.2026",
-    "excerpt": "U okviru programa saradnje na osnovu pridruženog članstva Republike Srbije u Objedinjenom institutu za nuklearna istraživanja (OINI), otvoren je poziv za učestvovanje talentovanih srpskih studenata na Međunarodnoj studen",
-    "image": "https://ftn.uns.ac.rs/wp-content/uploads/2026/08/praksa_OINI-768x461.jpg"
   },
   {
     "title": "Konkurs za upis na osnovne akademske i osnovne strukovne studije – SEPTEMBARSKI UPISNI ROK",
@@ -35,10 +21,24 @@
     "image": "https://ftn.uns.ac.rs/wp-content/uploads/2026/07/IMG_9834-768x576.jpg"
   },
   {
-    "title": "Pripremna nastava iz matematike za brucoše – RASPORED I UPUTSTVO",
-    "url": "https://ftn.uns.ac.rs/pripremna-nastava-iz-matematike-za-brucose-raspored-i-uputstvo/",
-    "date": "17.07.2026",
-    "excerpt": "Za studente I godine studija obavezna online pripremna nastava, koja počinje od ponedeljka, 21. septembra 2026. godine i trajaće do 25. septembra 2026.godine. Nastava će se održati upotrebom platforme Microsoft Teams. Sp",
-    "image": "https://ftn.uns.ac.rs/wp-content/uploads/2026/07/FTN-Baneri-za-sajt-2111-768x461.jpg"
+    "title": "PRELAZAK I NASTAVAK STUDIJA NA FAKULTETU TEHNIČKIH NAUKA",
+    "url": "https://ftn.uns.ac.rs/prelazak-i-nastavak-studija-na-fakultetu-tehnickih-nauka-2/",
+    "date": "27.07.2026",
+    "excerpt": "Lica koja su zainteresovana za nastavak studija na Fakultetu tehničkih nauka mogu da podnesu dokumentaciju na vrednovanje studijskog programa i priznavanje ispita u periodu od 1. do 10. septembra 2026. godine u vremensko",
+    "image": "https://ftn.uns.ac.rs/wp-content/uploads/2026/01/11.png"
+  },
+  {
+    "title": "Konkurs za upis na master akademske, strukovne i specijalističke studije",
+    "url": "https://ftn.uns.ac.rs/konkurs-za-upis-na-master-akademske-i-master-strukovne-studije/",
+    "date": "25.07.2026",
+    "excerpt": "Fakultet tehničkih nauka raspisao je Konkurs za upis studenata u I godinu master akademskih, master strukovnih i specijalističkih akademskih studija. Tekstove konkursa možete pogledati u nastavku:Конкурс за упис на масте",
+    "image": "https://ftn.uns.ac.rs/wp-content/uploads/2026/08/MASTER-768x461.jpg"
+  },
+  {
+    "title": "Konkurs za upis na doktorske akademske studije",
+    "url": "https://ftn.uns.ac.rs/konkurs-za-upis-na-doktorske-akademske-studije/",
+    "date": "24.07.2026",
+    "excerpt": "Fakultet tehničkih nauka raspisao je Konkurs za upis studenata u I godinu doktorskih akademskih studija.Tekst konkursa možete pogledati na sledećem linku: Конкурс за упис на докторске студије Podnošenje dokumenata za vre",
+    "image": "https://ftn.uns.ac.rs/wp-content/uploads/2026/08/DOKTORSKE-768x461.jpg"
   }
 ]
