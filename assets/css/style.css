@@ -808,6 +808,7 @@ textarea.input { height: auto; padding: 8px 9px; }
 .modal-body b { color: var(--text-primary); }
 
 .open-source-note { position: relative; }
+.mobile-br { display: none; }
 .open-source-doodle {
   position: absolute;
   top: -35px;
@@ -825,6 +826,8 @@ textarea.input { height: auto; padding: 8px 9px; }
 
 @media (max-width: 860px) {
   #app { grid-template-columns: 1fr; }
+
+  .mobile-br { display: inline; }
 
   .sidebar {
     position: fixed;
