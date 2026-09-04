@@ -10,7 +10,7 @@ const MONTHS_FULL = ['januar', 'februar', 'mart', 'april', 'maj', 'jun', 'jul', 
 const WEEKDAYS_SR = ['Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub', 'Ned'];
 
 // Currently displayed month in the exam calendar widget (UI-only state,
-// not persisted — resets to the current month on reload).
+// not persisted resets to the current month on reload).
 const calendarCursor = new Date();
 calendarCursor.setHours(0, 0, 0, 0);
 calendarCursor.setDate(1);
@@ -125,15 +125,17 @@ function renderHomeView() {
           </div>
           <div class="stat-tile">
             <div class="stat-label">Do sledećeg ispita</div>
-            <div class="stat-value ${daysLeft !== null ? 'warning' : ''}">${daysLeft !== null ? daysLeft : '—'}</div>
+            <div class="stat-value ${daysLeft !== null ? 'warning' : ''}">${daysLeft !== null ? daysLeft : '-'}</div>
             <div class="stat-meta">${daysLeft !== null ? (daysLeft === 1 ? 'dan' : 'dana') : 'nema zakazanih'}</div>
           </div>
         </div>
 
         <div class="dashboard-grid">
-          ${renderProgressWidget()}
+          <div class="dash-col-left">
+            ${renderProgressWidget()}
+            ${renderExamWidget()}
+          </div>
           ${renderBookmarksWidget()}
-          ${renderExamWidget()}
         </div>
       </div>
 
@@ -166,35 +168,32 @@ function categoryBlurb(key) {
 }
 
 function renderProgressWidget() {
-  const progress = store.getProgress();
-  const earned = store.totalCreditsEarned();
-  const passedEntries = Object.entries(progress.passed);
+  const plan = store.getPlan();
 
-  const rows = passedEntries.length
-    ? passedEntries.map(([key, entry]) => {
-        const [yearId, subjectId] = key.split(':');
-        const flat = allSubjectsFlat().find((s) => s.yearId === Number(yearId) && s.id === subjectId);
+  const rows = plan.length
+    ? plan.map((p) => {
+        const flat = allSubjectsFlat().find((s) => s.yearId === p.yearId && s.id === p.subjectId);
+        const title = esc(flat?.title || p.subjectId);
         return `
-          <div class="passed-row">
-            <span class="passed-title" title="${esc(flat?.title || subjectId)}">${esc(flat?.title || subjectId)}</span>
-            <span class="passed-credits">${entry.credits} b</span>
-            <button class="icon-btn" data-action="remove-passed" data-year="${yearId}" data-subject="${esc(subjectId)}" title="Ukloni">${icon('x', 'nav-icon')}</button>
+          <div class="plan-row">
+            <span class="plan-title" title="${title}">${title}</span>
+            <span class="plan-credits">${p.credits} b</span>
+            <div class="plan-actions">
+              <button type="button" class="btn btn-sm btn-success" data-action="plan-pass" data-year="${p.yearId}" data-subject="${esc(p.subjectId)}">Položeno</button>
+              <button type="button" class="btn btn-sm btn-danger" data-action="plan-cancel" data-year="${p.yearId}" data-subject="${esc(p.subjectId)}">Otkaži</button>
+            </div>
           </div>`;
       }).join('')
-    : '<div class="empty-state">Još nema označenih predmeta.</div>';
+    : '<div class="empty-state">Nema planiranih predmeta.<br>Dodaj predmet klikom na +.</div>';
 
   return `
     <div class="panel">
       <div class="panel-header">
-        <h3>Napredak</h3>
-        <button type="button" class="icon-btn" data-action="open-progress-modal" title="Dodaj položen predmet / izmeni cilj">${icon('plus', 'nav-icon')}</button>
+        <h3>Plan polaganja</h3>
+        <button type="button" class="icon-btn" data-action="open-progress-modal" title="Dodaj predmet, izmeni cilj ili poništi položen predmet">${icon('plus', 'nav-icon')}</button>
       </div>
       <div class="panel-body">
-        <div class="progress-summary">
-          <div class="row"><span>Osvojeno</span><b>${earned} / ${progress.targetCredits}</b></div>
-          <div class="progress-bar"><div class="progress-bar-fill" style="width:${progress.targetCredits > 0 ? Math.min(100, (earned / progress.targetCredits) * 100) : 0}%"></div></div>
-        </div>
-        <div class="passed-list">${rows}</div>
+        <div class="plan-list">${rows}</div>
       </div>
     </div>
   `;
@@ -202,8 +201,15 @@ function renderProgressWidget() {
 
 function renderProgressModalBody() {
   const progress = store.getProgress();
-  const passable = allSubjectsFlat().filter((s) => !store.isSubjectPassed(s.yearId, s.id));
-  const options = passable.map((s) => `<option value="${s.yearId}:${esc(s.id)}">God. ${s.yearId} — ${esc(s.title)}</option>`).join('');
+  const addable = allSubjectsFlat().filter((s) => !store.isSubjectPassed(s.yearId, s.id) && !store.isInPlan(s.yearId, s.id));
+  const options = addable.map((s) => `<option value="${s.yearId}:${esc(s.id)}" data-credits="${s.credits || ''}">God. ${s.yearId} - ${esc(s.title)}</option>`).join('');
+
+  const passedEntries = Object.entries(progress.passed);
+  const unpassOptions = passedEntries.map(([key, entry]) => {
+    const [yearId, subjectId] = key.split(':');
+    const flat = allSubjectsFlat().find((s) => s.yearId === Number(yearId) && s.id === subjectId);
+    return `<option value="${key}">God. ${yearId} - ${esc(flat?.title || subjectId)} (${entry.credits} b)</option>`;
+  }).join('');
 
   return `
     <form class="tracker-form" id="target-form">
@@ -215,30 +221,48 @@ function renderProgressModalBody() {
         </div>
       </div>
     </form>
-    ${passable.length ? `
-    <form class="tracker-form" id="passed-form" style="margin-bottom:0;">
+    ${addable.length ? `
+    <form class="tracker-form" id="plan-form">
       <div class="field">
-        <label for="passed-select">b) Dodaj položen predmet</label>
-        <select class="select" id="passed-select">${options}</select>
+        <label for="plan-select">b) Dodaj predmet u plan polaganja</label>
+        <select class="select" id="plan-select">${options}</select>
       </div>
       <div class="row">
-        <input class="input" id="passed-credits" type="number" min="0" step="1" placeholder="Broj bodova" required />
-        <button class="btn btn-primary btn-sm" type="submit">Dodaj predmet</button>
+        <input class="input" id="plan-credits" type="number" min="0" step="1" placeholder="Broj bodova" required />
+        <button class="btn btn-primary btn-sm" type="submit">Dodaj u plan</button>
       </div>
-    </form>` : '<div class="empty-state" style="margin-bottom:0;">Svi predmeti su već označeni kao položeni.</div>'}
+    </form>` : '<div class="empty-state">Svi predmeti su već planirani ili položeni.</div>'}
+    ${passedEntries.length ? `
+    <form class="tracker-form" id="unpass-form" style="margin-bottom:0;">
+      <div class="field">
+        <label for="unpass-select">c) Poništi status "Položeno"</label>
+        <select class="select" id="unpass-select">${unpassOptions}</select>
+      </div>
+      <button class="btn btn-danger btn-sm" type="submit">Poništi status</button>
+    </form>` : '<div class="empty-state" style="margin-bottom:0;">Nijedan predmet još nije označen kao položen.</div>'}
   `;
 }
 
 function refreshProgressModal() {
   const slot = document.getElementById('progress-modal-body');
   if (slot) slot.innerHTML = renderProgressModalBody();
+  syncPlanCredits();
 }
 
-const BOOKMARKS_EXPAND_THRESHOLD = 5;
+// Prefills "Broj bodova" from the selected subject's known ESPB value, so
+// picking a subject already in the catalog doesn't require looking up its
+// credit count by hand. Subjects with no preset (electives, mostly) just
+// leave the field blank for manual entry.
+function syncPlanCredits() {
+  const select = document.getElementById('plan-select');
+  const creditsInput = document.getElementById('plan-credits');
+  if (!select || !creditsInput) return;
+  const preset = select.options[select.selectedIndex]?.dataset.credits;
+  creditsInput.value = preset || '';
+}
 
 function renderBookmarksWidget() {
   const bookmarks = store.getBookmarks().slice().sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
-  const isExpanded = bookmarks.length > BOOKMARKS_EXPAND_THRESHOLD;
   const rows = bookmarks.length
     ? bookmarks.map((b) => `
         <div class="bookmark-row">
@@ -249,7 +273,7 @@ function renderBookmarksWidget() {
     : '<div class="empty-state">Nema zabeleženih predmeta.<br>Klikni na zvezdicu pored predmeta da ga zabeležiš.</div>';
 
   return `
-    <div class="panel${isExpanded ? ' expanded' : ''}">
+    <div class="panel">
       <div class="panel-header">
         <h3>Oznake</h3>
         ${icon('pin', 'nav-icon')}
@@ -313,18 +337,16 @@ function renderExamWidget() {
     examsByDate.get(e.date).push(e);
   });
 
-  const rows = exams.length
-    ? exams.map((e) => `
+  const rows = exams.map((e) => `
         <div class="exam-row ${new Date(e.date) < today ? 'is-past' : ''}">
           <span class="exam-date">${fmtShort(e.date)}</span>
           <span class="exam-title" title="${esc(e.title)}">${esc(e.title)}</span>
           ${e.note ? `<span class="badge">${esc(e.note)}</span>` : ''}
           <button class="icon-btn" data-action="remove-exam" data-id="${e.id}" title="Ukloni">${icon('trash', 'nav-icon')}</button>
-        </div>`).join('')
-    : '<div class="empty-state">Nema unetih ispita. Klikni na dan u kalendaru da dodaš ispit.</div>';
+        </div>`).join('');
 
   return `
-    <div class="panel span-2">
+    <div class="panel">
       <div class="panel-header">
         <h3>Kalendar ispita</h3>
         ${icon('calendar', 'nav-icon')}
@@ -335,9 +357,9 @@ function renderExamWidget() {
           <div class="countdown-num">${days}</div>
           <div class="countdown-label">${days === 1 ? 'dan do sledećeg ispita' : 'dana do sledećeg ispita'}</div>
           <div class="countdown-title">${esc(next.title)}${next.note ? ` · ${esc(next.note)}` : ''} · ${fmtHuman(next.date)}</div>
-        </div>` : `<div class="empty-state" style="margin-bottom:12px;">Nema zakazanih ispita. Klikni na dan u kalendaru da dodaš ispit.</div>`}
+        </div>` : `<div class="empty-state" style="margin-bottom:12px; font-size:11px">Nema zakazanih ispita. Klikni na dan u kalendaru da dodaš ispit.</div>`}
         ${renderCalendarGrid(calendarCursor, examsByDate)}
-        <div class="exam-list">${rows}</div>
+        ${exams.length ? `<div class="exam-list">${rows}</div>` : ''}
       </div>
     </div>
   `;
@@ -385,7 +407,7 @@ function renderYearView(yearId, focusSubjectId) {
       <span class="badge">${year.subjects.length} predmeta</span>
     </div>
 
-    ${!anyContent ? `<div class="year-empty-banner">Materijal za ${esc(year.label.toLowerCase())} je trenutno u pripremi. Predmeti su navedeni ispod — sadržaj se dodaje postepeno.</div>` : ''}
+    ${!anyContent ? `<div class="year-empty-banner">Materijal za ${esc(year.label.toLowerCase())} je trenutno u pripremi. Predmeti su navedeni ispod, sadržaj se dodaje postepeno.</div>` : ''}
 
     <div class="subject-list">
       ${year.subjects.map((s, idx) => renderSubjectRow(year, s, idx, s.id === focusSubjectId)).join('')}
@@ -472,6 +494,8 @@ function render() {
   const el = mount();
   if (!el) return;
 
+  document.body.classList.toggle('is-home', route.name === 'home');
+
   if (route.name === 'year') {
     el.innerHTML = `<div class="view">${renderYearView(route.yearId, route.subjectId)}</div>`;
     if (route.subjectId) {
@@ -480,7 +504,7 @@ function render() {
       });
     }
   } else {
-    el.innerHTML = `<div class="view">${renderHomeView()}</div>`;
+    el.innerHTML = `<div class="view view-home">${renderHomeView()}</div>`;
     hydrateNews();
   }
   window.scrollTo({ top: 0 });
@@ -523,9 +547,16 @@ function wireGlobalEvents() {
         render();
         break;
       }
-      case 'remove-passed': {
-        store.clearSubjectPassed(actionEl.dataset.year, actionEl.dataset.subject);
+      case 'plan-pass': {
+        store.passPlanItem(actionEl.dataset.year, actionEl.dataset.subject);
         render();
+        refreshProgressModal();
+        break;
+      }
+      case 'plan-cancel': {
+        store.removeFromPlan(actionEl.dataset.year, actionEl.dataset.subject);
+        render();
+        refreshProgressModal();
         break;
       }
       case 'remove-exam': {
@@ -575,6 +606,9 @@ function wireGlobalEvents() {
   });
 
   document.getElementById('modal-overlay')?.addEventListener('click', closeModals);
+  document.body.addEventListener('change', (e) => {
+    if (e.target.id === 'plan-select') syncPlanCredits();
+  });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModals();
     if (e.key === 'Enter' || e.key === ' ') {
@@ -589,13 +623,20 @@ function wireGlobalEvents() {
       const val = document.getElementById('target-input').value;
       store.setProgressTarget(val);
       render();
-      refreshProgressModal();
-    } else if (e.target.id === 'passed-form') {
+      closeModals();
+    } else if (e.target.id === 'plan-form') {
       e.preventDefault();
-      const sel = document.getElementById('passed-select').value;
-      const credits = document.getElementById('passed-credits').value;
+      const sel = document.getElementById('plan-select').value;
+      const credits = document.getElementById('plan-credits').value;
       const [yearId, subjectId] = sel.split(':');
-      if (yearId && subjectId) store.setSubjectPassed(yearId, subjectId, credits);
+      if (yearId && subjectId) store.addToPlan(yearId, subjectId, credits);
+      render();
+      closeModals();
+    } else if (e.target.id === 'unpass-form') {
+      e.preventDefault();
+      const sel = document.getElementById('unpass-select').value;
+      const [yearId, subjectId] = sel.split(':');
+      if (yearId && subjectId) store.unpassSubject(yearId, subjectId);
       render();
       refreshProgressModal();
     } else if (e.target.id === 'day-exam-form') {

@@ -101,6 +101,7 @@ svg.nav-icon { width: 16px; height: 16px; flex: none; display: inline-block; ver
   position: sticky;
   top: 0;
   height: 100vh;
+  overflow: hidden;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border);
   display: flex;
@@ -303,6 +304,9 @@ svg.nav-icon { width: 16px; height: 16px; flex: none; display: inline-block; ver
 .btn-danger { color: var(--danger); }
 .btn-danger:hover { background: var(--danger-soft); }
 
+.btn-success { color: var(--success); border-color: var(--success); }
+.btn-success:hover { background: var(--success-soft); }
+
 .btn-sm { height: 26px; padding: 0 9px; font-size: 11.5px; }
 .btn-icon { width: 30px; padding: 0; }
 
@@ -416,6 +420,10 @@ textarea.input { height: auto; padding: 8px 9px; }
   align-items: start;
 }
 
+/* Groups Plan polaganja + Kalendar ispita into one grid cell so the
+   calendar always sits directly under the plan, in the same column. */
+.dash-col-left { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+
 @media (max-width: 720px) {
   .dashboard-grid { grid-template-columns: 1fr; }
 }
@@ -431,8 +439,6 @@ textarea.input { height: auto; padding: 8px 9px; }
   align-items: start;
 }
 
-.span-2 { grid-column: 1 / -1; }
-
 .home-rail { min-width: 0; }
 .home-rail .panel { position: sticky; top: calc(var(--topbar-h) + 24px); }
 
@@ -442,34 +448,24 @@ textarea.input { height: auto; padding: 8px 9px; }
 }
 
 /* ---------------------------------------------------------------------- */
-/* Progress tracker widget                                                 */
+/* Plan polaganja widget                                                   */
 /* ---------------------------------------------------------------------- */
 
 .tracker-form { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
 .tracker-form .row { display: flex; gap: 8px; }
 .tracker-form .row > * { flex: 1; min-width: 0; }
 
-.progress-summary { margin-bottom: 12px; }
-.progress-summary .row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-}
-.progress-summary .row b { color: var(--text-primary); font-variant-numeric: tabular-nums; }
-
-.passed-list { display: flex; flex-direction: column; gap: 1px; max-height: 220px; overflow-y: auto; }
-.passed-row {
+.plan-list { display: flex; flex-direction: column; gap: 1px; max-height: 260px; overflow-y: auto; }
+.plan-row {
   display: flex; align-items: center; gap: 8px;
-  padding: 7px 4px;
+  padding: 8px 4px;
   border-bottom: 1px solid var(--border);
   font-size: 12px;
 }
-.passed-row:last-child { border-bottom: none; }
-.passed-row .passed-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.passed-row .passed-credits { font-variant-numeric: tabular-nums; color: var(--text-muted); font-size: 11.5px; }
+.plan-row:last-child { border-bottom: none; }
+.plan-row .plan-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.plan-row .plan-credits { font-variant-numeric: tabular-nums; color: var(--text-muted); font-size: 11.5px; flex: none; }
+.plan-row .plan-actions { display: flex; gap: 4px; flex: none; }
 
 .empty-state {
   color: var(--text-muted);
@@ -492,20 +488,6 @@ textarea.input { height: auto; padding: 8px 9px; }
 .bookmark-row a { flex: 1; min-width: 0; font-size: 12.5px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bookmark-row a:hover { color: var(--accent); }
 .bookmark-row .bookmark-year { font-size: 10.5px; color: var(--text-muted); }
-
-/* Once more than 5 subjects are bookmarked, the widget claims the full
-   dashboard-grid row (directly under Napredak, which stays single-column)
-   and lays its rows out two-up instead of growing tall and narrow. */
-.panel.expanded { grid-column: span 2; }
-.panel.expanded .bookmark-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.panel.expanded .bookmark-row { border-bottom: none; border: 1px solid var(--border); }
-@media (max-width: 520px) {
-  .panel.expanded .bookmark-list { grid-template-columns: 1fr; }
-}
 
 /* ---------------------------------------------------------------------- */
 /* Exam calendar widget                                                    */
@@ -851,6 +833,78 @@ textarea.input { height: auto; padding: 8px 9px; }
 
   .view { padding: 18px 16px 48px; }
   .category-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Desktop scale — the layout reads as too sparse at 100% on wide          */
+/* screens but looks right at 130% zoom, so reproduce that zoom exactly   */
+/* (same mechanism, just applied unconditionally instead of by the user). */
+/* Scoped well above every other breakpoint (widest is home-grid's        */
+/* 980px) so tablet and mobile layouts are completely unaffected.         */
+/* ---------------------------------------------------------------------- */
+
+@media (min-width: 981px) {
+  html { zoom: 1.3; }
+
+  /* `zoom` inflates EVERY descendant box for painting, including ones sized
+     with `vh` — a `height: 100vh` box lays out at the real viewport height
+     but then paints 1.3x too tall (verified: a 900px-viewport sidebar with
+     height:100vh rendered at 1170px, pushing "O sajtu" off screen). Any
+     viewport-relative height in this zoomed scope must pre-divide by the
+     zoom factor so it paints back at the intended size. */
+  .sidebar { height: calc(100vh / 1.3); }
+
+  /* ---------------------------------------------------------------------- */
+  /* Fixed, single-screen home dashboard (desktop only).                    */
+  /* The page itself never scrolls while Home is active — height flows      */
+  /* down as a chain of flex boxes so only two places can ever grow past    */
+  /* their box: the "Oznake" list and the "Plan polaganja" list, both of    */
+  /* which scroll internally instead of pushing anything else around.       */
+  /* Year pages are untouched: this is all scoped under body.is-home.       */
+  /* ---------------------------------------------------------------------- */
+
+  body.is-home { overflow: hidden; }
+  body.is-home #app { height: calc(100vh / 1.3); }
+  body.is-home .main { height: calc(100vh / 1.3); }
+  body.is-home main { flex: 1; min-height: 0; display: flex; overflow-y: auto; }
+  body.is-home #view-mount { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  body.is-home .view-home { flex: 1; min-height: 0; display: flex; flex-direction: column; padding-top: 16px; padding-bottom: 16px; }
+
+  /* CSS Grid's `fr` track sizing miscalculates once `zoom` is applied in
+     this browser (verified: a 1fr/390px grid rendered as ~160px/390px
+     instead of ~330px/390px), so every `fr`-based layout below switches to
+     an equivalent flexbox at this same breakpoint, where zoom kicks in. */
+  body.is-home .stat-row { display: flex; flex-wrap: wrap; margin-bottom: 12px; }
+  body.is-home .stat-row > .stat-tile { flex: 1 1 160px; }
+
+  /* align-items:stretch (grid's default, but this file sets align-items:start
+     on the base .home-grid/.dashboard-grid rules) so Najnovije vesti stretches
+     to the same bottom edge as Kalendar ispita / Oznake, not just its own
+     content height. */
+  body.is-home .home-grid { display: flex; flex: 1; min-height: 0; align-items: stretch; }
+  body.is-home .home-main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height: 0; }
+  body.is-home .home-rail { flex: 0 0 390px; width: 390px; display: flex; }
+
+  body.is-home .dashboard-grid { display: flex; flex: 1; min-height: 0; align-items: stretch; }
+  body.is-home .dash-col-left { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+  body.is-home .dashboard-grid > .panel { flex: 1; min-width: 0; min-height: 0; }
+
+  body.is-home .panel { display: flex; flex-direction: column; min-height: 0; }
+  body.is-home .panel-body { flex: 1; min-height: 0; overflow-y: auto; }
+  /* panel-body is now the single scroll boundary for each box, so the lists'
+     own (smaller-breakpoint) max-heights would just add a redundant, badly
+     proportioned inner scrollbar — let them fill panel-body instead. */
+  body.is-home .plan-list,
+  body.is-home .exam-list { max-height: none; }
+
+  /* Plan polaganja is capped and scrolls once full; Kalendar ispita fills
+     whatever's left in the column, so it always ends flush with Oznake's
+     stretched bottom edge (both are constrained by dashboard-grid's own
+     height, which comes from home-main's remaining space after stat-row). */
+  body.is-home .dash-col-left > .panel:first-child { flex: 0 0 auto; max-height: 160px; }
+  body.is-home .dash-col-left > .panel:last-child { flex: 1; min-height: 0; }
+
+  body.is-home .home-rail .panel { flex: 1; min-height: 0; position: static; }
 }
 
 /* ---------------------------------------------------------------------- */

@@ -21,6 +21,7 @@ export const YEARS = [
       {
         id: 'algebra',
         title: 'Algebra',
+        credits: 9,
         advice: 'Najefektivnije je fokusirati se na video predavanja samo sa vežbi.',
         categories: {
           skripte: [
@@ -48,6 +49,7 @@ export const YEARS = [
       {
         id: 'oet',
         title: 'Osnove elektrotehnike',
+        credits: 9,
         advice: 'Kolokvijumi su tipično lakši što vreme više prolazi.',
         categories: {
           skripte: [
@@ -77,6 +79,7 @@ export const YEARS = [
       {
         id: 'pjisp',
         title: 'Programski jezici i strukture podataka',
+        credits: 9,
         advice: 'Pošto se na vežbama i predavanjima ide veoma brzo, preporučuje se, ako znate engleski, da preletite C deo kursa iz CS50 (od lekcije 1 do 5).',
         categories: {
           skripte: [
@@ -98,6 +101,7 @@ export const YEARS = [
       {
         id: 'engleski',
         title: 'Engleski',
+        credits: 3,
         advice: 'Samo predjite vežbe koje radite na predavanjima, retko kada daju nešto neočekivano.',
         categories: {
           skripte: [],
@@ -113,6 +117,7 @@ export const YEARS = [
       {
         id: 'arhitektura',
         title: 'Arhitektura računara',
+        credits: 9,
         advice: 'Fokusirati se isključivo na video predavanja vežbi.',
         categories: {
           skripte: [
@@ -133,6 +138,7 @@ export const YEARS = [
       {
         id: 'sociologija',
         title: 'Sociologija tehnike',
+        credits: 3,
         advice: 'Za pripremu ispita otvoriti skripte i učiti samo pitanja na koja se ne može odgovoriti logikom. Na ispitu je bitno samo da se ispuni po jedan list po pitanju.',
         categories: {
           skripte: [
@@ -146,6 +152,7 @@ export const YEARS = [
       {
         id: 'analiza',
         title: 'Matematička analiza',
+        credits: 6,
         advice: 'Učiti samo sa video predavanja vežbi i vežbati samo prošle 3 godine datih kolokvijuma. Šablonski je i najlakši je prvi i poslednji ispitni rok.',
         categories: {
           skripte: [
@@ -168,6 +175,7 @@ export const YEARS = [
       {
         id: 'algoritmi',
         title: 'Uvod u algoritme',
+        credits: 9,
         advice: 'Fokusirati se na razumevanje algoritama i same sintakse jezika.',
         categories: {
           skripte: [
@@ -193,16 +201,16 @@ export const YEARS = [
     label: 'Druga godina',
     short: 'II',
     subjects: [
-      { id: 'diskretna', title: 'Diskretna matematika', categories: emptyCategories() },
-      { id: 'oee', title: 'Osnove elektroenergetike', categories: emptyCategories() },
-      { id: 'oop', title: 'Objektno orijentisano programiranje', categories: emptyCategories() },
+      { id: 'diskretna', title: 'Diskretna matematika', credits: 4, categories: emptyCategories() },
+      { id: 'oee', title: 'Osnove elektroenergetike', credits: 6, categories: emptyCategories() },
+      { id: 'oop', title: 'Objektno orijentisano programiranje', credits: 8, categories: emptyCategories() },
       { id: 'lprs', title: 'Logičko projektovanje računarskih sistema', categories: emptyCategories() },
-      { id: 'algoritmi2', title: 'Primenjeni algoritmi', categories: emptyCategories() },
-      { id: 'os', title: 'Operativni sistemi', categories: emptyCategories() },
+      { id: 'algoritmi2', title: 'Primenjeni algoritmi', credits: 6, categories: emptyCategories() },
+      { id: 'os', title: 'Operativni sistemi', credits: 8, categories: emptyCategories() },
       { id: 'nrs', title: 'Namenski računarski sistemi', categories: emptyCategories() },
-      { id: 'oot', title: 'Objektno orijentisane tehnologije', categories: emptyCategories() },
+      { id: 'oot', title: 'Objektno orijentisane tehnologije', credits: 5, categories: emptyCategories() },
       { id: 'optimizacija', title: 'Metodi optimizacije', categories: emptyCategories() },
-      { id: 'fluid', title: 'Sistemi za transport i distribuciju fluida', categories: emptyCategories() },
+      { id: 'fluid', title: 'Sistemi za transport i distribuciju fluida', credits: 5, categories: emptyCategories() },
     ],
   },
   {
@@ -211,16 +219,16 @@ export const YEARS = [
     label: 'Treća godina',
     short: 'III',
     subjects: [
-      { id: 'prevodioci', title: 'Programski prevodioci', categories: emptyCategories() },
-      { id: 'baze', title: 'Uvod u baze podataka', categories: emptyCategories() },
-      { id: 'modeliranje', title: 'Modeliranje i simulacija sistema', categories: emptyCategories() },
-      { id: 'ers', title: 'Elementi razvoja softvera', categories: emptyCategories() },
-      { id: 'mreze', title: 'Primena računarskih mreža', categories: emptyCategories() },
-      { id: 'odp', title: 'Osnove distributivnog programiranja', categories: emptyCategories() },
-      { id: 'aus', title: 'Akvizicioni upravljački sistemi', categories: emptyCategories() },
-      { id: 'vp', title: 'Virtuelizacija procesa', categories: emptyCategories() },
-      { id: 'web', title: 'Web programiranje', categories: emptyCategories() },
-      { id: 'iu', title: 'Inženjerstvo upotrebljivosti', categories: emptyCategories() },
+      { id: 'prevodioci', title: 'Programski prevodioci', credits: 4, categories: emptyCategories() },
+      { id: 'baze', title: 'Uvod u baze podataka', credits: 8, categories: emptyCategories() },
+      { id: 'modeliranje', title: 'Modeliranje i simulacija sistema', credits: 8, categories: emptyCategories() },
+      { id: 'ers', title: 'Elementi razvoja softvera', credits: 4, categories: emptyCategories() },
+      { id: 'mreze', title: 'Primena računarskih mreža', credits: 6, categories: emptyCategories() },
+      { id: 'odp', title: 'Osnove distributivnog programiranja', credits: 6, categories: emptyCategories() },
+      { id: 'aus', title: 'Akvizicioni upravljački sistemi', credits: 6, categories: emptyCategories() },
+      { id: 'vp', title: 'Virtuelizacija procesa', credits: 6, categories: emptyCategories() },
+      { id: 'web', title: 'Web programiranje', credits: 6, categories: emptyCategories() },
+      { id: 'iu', title: 'Inženjerstvo upotrebljivosti', credits: 6, categories: emptyCategories() },
     ],
   },
   {
@@ -233,9 +241,9 @@ export const YEARS = [
       { id: 'oib', title: 'Osnovne informacione bezbednosti', categories: emptyCategories() },
       { id: 'mppm', title: 'Modeli podataka u pametnim mrežama', categories: emptyCategories() },
       { id: 'drs', title: 'Distribuirani računarski sistemi', categories: emptyCategories() },
-      { id: 'rva', title: 'Razvoj višeslojnih aplikacija', categories: emptyCategories() },
-      { id: 'primena_web', title: 'Primena web programiranja', categories: emptyCategories() },
-      { id: 'ppm', title: 'Programiranje u pametnim mrežama', categories: emptyCategories() },
+      { id: 'rva', title: 'Razvoj višeslojnih aplikacija', credits: 6, categories: emptyCategories() },
+      { id: 'primena_web', title: 'Primena web programiranja', credits: 6, categories: emptyCategories() },
+      { id: 'ppm', title: 'Programiranje u pametnim mrežama', credits: 6, categories: emptyCategories() },
     ],
   },
 ];

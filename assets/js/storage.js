@@ -7,6 +7,7 @@ const KEYS = {
   progress: 'ftn.progress.v1',
   bookmarks: 'ftn.bookmarks.v1',
   exams: 'ftn.exams.v1',
+  plan: 'ftn.plan.v1',
 };
 
 function readJSON(key, fallback) {
@@ -71,7 +72,7 @@ export function setSubjectPassed(yearId, subjectId, credits) {
   return progress;
 }
 
-export function clearSubjectPassed(yearId, subjectId) {
+export function unpassSubject(yearId, subjectId) {
   const progress = getProgress();
   delete progress.passed[subjectKey(yearId, subjectId)];
   writeJSON(KEYS.progress, progress);
@@ -81,6 +82,51 @@ export function clearSubjectPassed(yearId, subjectId) {
 export function totalCreditsEarned() {
   const progress = getProgress();
   return Object.values(progress.passed).reduce((sum, entry) => sum + (Number(entry.credits) || 0), 0);
+}
+
+// ---------- exam plan ("Plan polaganja") ----------
+// Subjects a student intends to take, each with a pre-set credit value.
+// Marking one passed moves its credits into the progress tracker above and
+// drops it from the plan; cancelling just drops it, no credits awarded.
+
+export function getPlan() {
+  return readJSON(KEYS.plan, []);
+}
+
+export function isInPlan(yearId, subjectId) {
+  const key = subjectKey(yearId, subjectId);
+  return getPlan().some((p) => p.key === key);
+}
+
+export function addToPlan(yearId, subjectId, credits) {
+  const plan = getPlan();
+  const key = subjectKey(yearId, subjectId);
+  if (plan.some((p) => p.key === key)) return plan;
+  plan.push({
+    key,
+    yearId: Number(yearId),
+    subjectId,
+    credits: Math.max(0, Number(credits) || 0),
+    addedAt: new Date().toISOString(),
+  });
+  writeJSON(KEYS.plan, plan);
+  return plan;
+}
+
+export function removeFromPlan(yearId, subjectId) {
+  const key = subjectKey(yearId, subjectId);
+  const plan = getPlan().filter((p) => p.key !== key);
+  writeJSON(KEYS.plan, plan);
+  return plan;
+}
+
+export function passPlanItem(yearId, subjectId) {
+  const key = subjectKey(yearId, subjectId);
+  const item = getPlan().find((p) => p.key === key);
+  if (!item) return null;
+  setSubjectPassed(yearId, subjectId, item.credits);
+  removeFromPlan(yearId, subjectId);
+  return item;
 }
 
 // ---------- bookmarks ----------
