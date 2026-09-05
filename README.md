@@ -85,4 +85,4 @@ Projekat je objavljen pod The Unlicense licencom.
 * [GitHub](https://github.com/ftn-psi/ftn-psi.github.io)
 * [sekulovicFTN@gmail.com](mailto:sekulovicFTN@gmail.com)
 
-<font color="red"><strong>DISCLAIMER: Redizajn ovog sajta je urađen uz značajnu pomoć Anthropic Claude AI-a, od transformacije originalnog sajta do njegove trenutne moderne verzije.</strong></font>
+- ![#f03c15](https://placehold.co/15x15/f03c15/f03c15.png) `#f03c15`
