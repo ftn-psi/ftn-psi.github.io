@@ -2,7 +2,7 @@
 
 Materijali i korisni alati za studente smera Primenjeno softversko inženjerstvo na Fakultetu tehničkih nauka u Novom Sadu.
 
-[Website](https://ftn-psi.github.io/)
+[ftn - E3](https://ftn-psi.github.io/)
 
 ## O projektu
 
