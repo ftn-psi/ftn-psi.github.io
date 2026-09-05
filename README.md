@@ -86,9 +86,5 @@ Projekat je objavljen pod The Unlicense licencom.
 * [sekulovicFTN@gmail.com](mailto:sekulovicFTN@gmail.com)
 
 ```diff
-- text in red
-+ text in green
-! text in orange
-# text in gray
-@@ text in purple (and bold)@@
+- Redizajn ovog sajta je urađen sa pomoći Anthropic Claude AI-a, od transformacije originalnog sajta do njegove trenutne moderne verzije, sve informacije, funkcionalnosti kao i koncepti su ostavljeni u svome originalu i radjeni su rucno.
 ```
