@@ -1,30 +1,86 @@
-# Fakultet Tehničkih Nauka - Smer Primenjeno Softversko Inzenjerstvo
+# FTN PSI
 
-Ovaj projekat predstavlja sajt za jedan od smerova na Fakultetu Tehničkih Nauka u Novom Sadu. Sajt je namenjen studentima i sadrži sve relevantne materijale, uključujući:
+Materijali i korisni alati za studente smera Primenjeno softversko inženjerstvo na Fakultetu tehničkih nauka u Novom Sadu.
 
-- Skripte sa predavanja
-- Video zapise predavanja
-- Vežbe i dodatne materijale
+[Website](https://ftn-psi.github.io/)
 
-Ovaj projekat je **open source**, pa svako može da preuzme kod i prilagodi ga za svoj smer na fakultetu.
+## O projektu
 
-## Funkcionalnosti
+FTN PSI je napravljen kako bi materijali za fakultet bili dostupni na jednom mestu i lakši za pronalaženje.
 
-- Pristup svim skriptama, predavanjima i vežbama
-- Organizovani sadržaj po godinama i predmetima
-- Mogućnost dodavanja novih materijala (po preporuci na email)
-- Jednostavno pregledanje i preuzimanje materijala
+Materijali su organizovani po godinama i predmetima, a za svaki predmet mogu se pronaći različite vrste materijala, kao što su:
 
-## Kako doprineti?
+* skripte
+* predavanja
+* vežbe
+* zadaci
+* dodatni materijali
+* korisni linkovi
 
-Pozdravljam doprinose!
+Sajt takođe sadrži jednostavan dashboard za praćenje studiranja.
 
-Kontaktirajte me na sekulovicFTN@gmail.com ukoliko ste zainteresovani ili imate pitanja.
+## Dashboard
+
+Dashboard omogućava praćenje:
+
+* položenih predmeta
+* osvojenih bodova
+* napretka kroz studije
+* ispita
+* oznaka i prečica do predmeta
+
+Nije potreban nalog. Podaci koje korisnik unese u dashboard čuvaju se lokalno u browseru.
+
+## Organizacija
+
+Materijali su podeljeni po godinama i predmetima:
+
+```text
+FTN PSI
+|
++-- Prva godina
+|   +-- Predmet
+|   +-- Predmet
+|   +-- Predmet
+|
++-- Druga godina
+|   +-- Predmet
+|   +-- Predmet
+|   +-- Predmet
+|
++-- Treća godina
+|   +-- Predmet
+|   +-- Predmet
+|   +-- Predmet
+|
++-- Četvrta godina
+    +-- Predmet
+    +-- Predmet
+    +-- Predmet
+```
+
+Sadržaj se dodaje i menja kako bi se što više materijala nalazilo na jednom mestu.
+
+## Doprinos
+
+Ako imate materijal koji nedostaje, pronađete neispravan link ili imate predlog za sajt, slobodno otvorite Issue ili Pull Request.
+
+Možete poslati i materijale na:
+
+[sekulovicFTN@gmail.com](mailto:sekulovicFTN@gmail.com)
+
+## Napomena
+
+Materijali su prikupljeni iz različitih izvora i od različitih generacija studenata. Zbog toga neki materijali mogu biti zastareli ili se odnositi na stariji nastavni program.
+
+Za zvanične informacije o predmetima, ispitima i nastavnom programu treba proveriti zvanične izvore FTN-a.
 
 ## Licenca
 
-Ovaj projekat je licenciran pod [The Unlicense](https://choosealicense.com/licenses/unlicense/).
+Projekat je objavljen pod The Unlicense licencom.
 
-## Zahvale
+## Linkovi
 
-Veliko hvala svima koji su do sada doprineli projektu!
+* [Sajt](https://ftn-psi.github.io/)
+* [GitHub](https://github.com/ftn-psi/ftn-psi.github.io)
+* [sekulovicFTN@gmail.com](mailto:sekulovicFTN@gmail.com)
