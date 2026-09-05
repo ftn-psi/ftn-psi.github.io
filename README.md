@@ -85,5 +85,10 @@ Projekat je objavljen pod The Unlicense licencom.
 * [GitHub](https://github.com/ftn-psi/ftn-psi.github.io)
 * [sekulovicFTN@gmail.com](mailto:sekulovicFTN@gmail.com)
 
-[- ![#f03c15](https://placehold.co/15x15/f03c15/f03c15.png) `#f03c15`
-](https://placehold.it/150/ffffff/ff0000?text=hello)
+```diff
+- text in red
++ text in green
+! text in orange
+# text in gray
+@@ text in purple (and bold)@@
+```
