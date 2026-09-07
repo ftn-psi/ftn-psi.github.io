@@ -8,6 +8,7 @@ const KEYS = {
   bookmarks: 'ftn.bookmarks.v1',
   exams: 'ftn.exams.v1',
   plan: 'ftn.plan.v1',
+  sync: 'ftn.sync.v1',
 };
 
 function readJSON(key, fallback) {
@@ -206,4 +207,55 @@ export function daysUntil(dateStr) {
   const today = startOfToday(new Date());
   const targetDay = startOfToday(target);
   return Math.round((targetDay - today) / 86400000);
+}
+
+// ---------- cross-device sync ("Sinhronizuj") ----------
+// Bundles everything above (minus onboarding, which is per-browser rather
+// than real data) so it can be pushed to / pulled from a shared cloud
+// document keyed by a short code. See assets/js/sync.js for the transport.
+
+const DEFAULT_SYNC_META = { code: '', lastSyncAt: '', lastDirection: '' };
+
+export function getSyncMeta() {
+  const meta = readJSON(KEYS.sync, DEFAULT_SYNC_META);
+  return { ...DEFAULT_SYNC_META, ...meta };
+}
+
+export function setSyncMeta(patch) {
+  const meta = { ...getSyncMeta(), ...patch };
+  writeJSON(KEYS.sync, meta);
+  return meta;
+}
+
+export function exportSyncBundle() {
+  return {
+    progress: getProgress(),
+    bookmarks: getBookmarks(),
+    exams: readJSON(KEYS.exams, []),
+    plan: getPlan(),
+  };
+}
+
+export function importSyncBundle(bundle) {
+  if (!bundle || typeof bundle !== 'object') return;
+  if (bundle.progress) writeJSON(KEYS.progress, bundle.progress);
+  if (Array.isArray(bundle.bookmarks)) writeJSON(KEYS.bookmarks, bundle.bookmarks);
+  if (Array.isArray(bundle.exams)) writeJSON(KEYS.exams, bundle.exams);
+  if (Array.isArray(bundle.plan)) writeJSON(KEYS.plan, bundle.plan);
+}
+
+// True when a bundle carries no real data (fresh/default browser state) —
+// used to stop "Sačuvaj / Sinhronizuj" and the overwrite action from
+// creating, or replacing a real save with, an empty record.
+export function isSyncBundleEmpty(bundle) {
+  if (!bundle) return true;
+  const passedCount = Object.keys(bundle.progress?.passed || {}).length;
+  const targetIsDefault = Number(bundle.progress?.targetCredits) === DEFAULT_PROGRESS.targetCredits;
+  return (
+    passedCount === 0 &&
+    targetIsDefault &&
+    (bundle.bookmarks || []).length === 0 &&
+    (bundle.exams || []).length === 0 &&
+    (bundle.plan || []).length === 0
+  );
 }

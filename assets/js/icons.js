@@ -26,6 +26,7 @@ const PATHS = {
   target: '<circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="4.5" /><circle cx="12" cy="12" r="0.8" fill="currentColor" />',
   pin: '<path d="M12 3.5c-3 0-5 2.1-5 5 0 3.6 5 12 5 12s5-8.4 5-12c0-2.9-2-5-5-5Z" /><circle cx="12" cy="8.4" r="1.7" />',
   clock: '<circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" />',
+  sync: '<path d="M4 12a8 8 0 0 1 13.5-5.7M20 4v5h-5" /><path d="M20 12a8 8 0 0 1-13.5 5.7M4 20v-5h5" />',
 };
 
 export function icon(name, cls = 'nav-icon') {

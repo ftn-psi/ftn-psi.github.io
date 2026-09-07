@@ -51,6 +51,9 @@
           <a href="https://oceniprofesora.rs/" target="_blank" rel="noopener noreferrer" class="nav-link year-link">
             <span>Ocenite profesora</span>
           </a>
+          <button class="nav-link year-link" data-action="open-sync">
+            <span>Sinhronizuj</span>
+          </button>
         </div>
       </div>
 
@@ -104,6 +107,14 @@
       <button class="icon-btn" data-action="close-modal" title="Zatvori" style="font-size:16px;">×</button>
     </div>
     <div class="modal-body" id="progress-modal-body"></div>
+  </div>
+
+  <div class="modal" id="sync-modal" role="dialog" aria-modal="true" aria-labelledby="sync-modal-title">
+    <div class="modal-header">
+      <h3 id="sync-modal-title">Sinhronizuj</h3>
+      <button class="icon-btn" data-action="close-modal" title="Zatvori" style="font-size:16px;">×</button>
+    </div>
+    <div class="modal-body" id="sync-modal-body"></div>
   </div>
 
   <div class="modal" id="day-modal" role="dialog" aria-modal="true" aria-labelledby="day-modal-title">

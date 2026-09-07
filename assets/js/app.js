@@ -2,6 +2,7 @@ import { YEARS, getYear, subjectHasContent, allSubjectsFlat, CATEGORY_LABELS } f
 import * as store from './storage.js';
 import { icon } from './icons.js';
 import { fetchNews, MOCK_NEWS } from './news.js';
+import * as sync from './sync.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const CATEGORY_ORDER = ['skripte', 'video', 'vezbe', 'dodatno'];
@@ -259,6 +260,113 @@ function syncPlanCredits() {
   if (!select || !creditsInput) return;
   const preset = select.options[select.selectedIndex]?.dataset.credits;
   creditsInput.value = preset || '';
+}
+
+// ---------------------------------------------------------------------- //
+// Cross-device sync modal ("Sinhronizuj")
+// ---------------------------------------------------------------------- //
+
+// Transient result of the last sync action (shown until the modal is
+// reopened or another action runs); not persisted, unlike syncMeta below.
+let syncStatus = null;
+let syncBusy = false;
+
+function renderSyncModalBody() {
+  const meta = store.getSyncMeta();
+  const configured = sync.isConfigured();
+
+  const statusHtml = syncStatus
+    ? `<div class="sync-status ${syncStatus.type === 'error' ? 'is-error' : 'is-ok'}">${esc(syncStatus.text)}</div>`
+    : meta.lastSyncAt
+      ? `<div class="sync-status is-ok">Poslednja sinhronizacija: ${fmtHuman(meta.lastSyncAt)}  kod ${esc(meta.code)} (${meta.lastDirection === 'push' ? 'otpremljeno' : 'preuzeto'})</div>`
+      : '';
+
+  return `
+    <p>Ova opcija prenosi tvoje podatke sa ovog sajta  <b>osvojene bodove</b>, <b>plan polaganja</b>, <b>oznake</b> i <b>kalendar ispita</b>  na drugi računar, ili ih vraća nazad ovde.</p>
+    <p>Osmisli kod od <b>4 do 8 cifara</b>. Klikni "Sačuvaj / Sinhronizuj": ako taj kod još ne postoji u bazi, tvoji trenutni podaci se čuvaju pod njim; ako kod već postoji, sačuvani podaci se preuzimaju i zamenjuju ono što je trenutno na ovom računaru.</p>
+    <div class="sync-warning">Kod je jedina zaštita ovih podataka  ne deli ga sa nepoznatim osobama i ne koristi pravu lozinku kao kod.</div>
+    ${!configured ? '<div class="sync-warning" style="color:var(--danger);">Sinhronizacija još nije podešena na ovom sajtu (nedostaje Firebase konfiguracija).</div>' : ''}
+    ${statusHtml}
+    <form class="tracker-form" id="sync-form" style="margin-bottom:0;">
+      <div class="field">
+        <label for="sync-code">Kod (4-8 cifara)</label>
+        <input class="input" id="sync-code" type="text" inputmode="numeric" pattern="[0-9]{4,8}" maxlength="8" placeholder="npr. 4821" value="${esc(meta.code || '')}" required />
+      </div>
+      <div class="sync-actions">
+        <button class="btn btn-primary btn-sm" type="submit" ${syncBusy ? 'disabled' : ''}>${syncBusy ? 'Sačekaj…' : 'Sačuvaj / Sinhronizuj'}</button>
+      </div>
+    </form>
+    <hr class="sync-divider" />
+    <p>Već imaš sačuvan kod i želiš da <b>zapišeš</b> u tu bazu sa trenutnim podacima sa ovog računara (umesto da ih preuzmeš)?</p>
+    <button class="btn btn-danger btn-sm" data-action="sync-overwrite" type="button" ${syncBusy ? 'disabled' : ''} style="width:100%;">Prepiši sačuvano ovim podacima</button>
+  `;
+}
+
+function refreshSyncModal() {
+  const slot = document.getElementById('sync-modal-body');
+  if (slot) slot.innerHTML = renderSyncModalBody();
+}
+
+async function handleSyncSubmit(code) {
+  if (syncBusy) return;
+  if (!sync.isCodeValid(code)) {
+    syncStatus = { type: 'error', text: 'Kod mora imati 4 do 8 cifara.' };
+    refreshSyncModal();
+    return;
+  }
+  syncBusy = true;
+  syncStatus = null;
+  refreshSyncModal();
+  try {
+    const remote = await sync.pullSync(code);
+    if (remote) {
+      store.importSyncBundle(remote);
+      store.setSyncMeta({ code, lastSyncAt: new Date().toISOString(), lastDirection: 'pull' });
+      syncStatus = { type: 'ok', text: `Podaci preuzeti sa koda ${code} i primenjeni na ovaj računar.` };
+      render();
+    } else {
+      const bundle = store.exportSyncBundle();
+      if (store.isSyncBundleEmpty(bundle)) {
+        syncStatus = { type: 'error', text: 'Nemaš još ništa sačuvano na ovom računaru (bodove, plan, oznake ili ispite)  nema šta da se sinhronizuje pod novim kodom.' };
+      } else {
+        await sync.pushSync(code, bundle);
+        store.setSyncMeta({ code, lastSyncAt: new Date().toISOString(), lastDirection: 'push' });
+        syncStatus = { type: 'ok', text: `Kod ${code} nije postojao u bazi  trenutni podaci su sačuvani pod njim.` };
+      }
+    }
+  } catch (err) {
+    syncStatus = { type: 'error', text: err?.message || 'Sinhronizacija nije uspela. Proveri internet konekciju.' };
+  } finally {
+    syncBusy = false;
+    refreshSyncModal();
+  }
+}
+
+async function handleSyncOverwrite(code) {
+  if (syncBusy) return;
+  if (!sync.isCodeValid(code)) {
+    syncStatus = { type: 'error', text: 'Kod mora imati 4 do 8 cifara.' };
+    refreshSyncModal();
+    return;
+  }
+  syncBusy = true;
+  syncStatus = null;
+  refreshSyncModal();
+  try {
+    const bundle = store.exportSyncBundle();
+    if (store.isSyncBundleEmpty(bundle)) {
+      syncStatus = { type: 'error', text: 'Nemaš još ništa sačuvano na ovom računaru  prepisivanje bi obrisalo ono što je već sačuvano pod ovim kodom. Prekinuto.' };
+    } else {
+      await sync.pushSync(code, bundle);
+      store.setSyncMeta({ code, lastSyncAt: new Date().toISOString(), lastDirection: 'push' });
+      syncStatus = { type: 'ok', text: `Sačuvano pod kodom ${code} je prepisano trenutnim podacima sa ovog računara.` };
+    }
+  } catch (err) {
+    syncStatus = { type: 'error', text: err?.message || 'Sinhronizacija nije uspela. Proveri internet konekciju.' };
+  } finally {
+    syncBusy = false;
+    refreshSyncModal();
+  }
 }
 
 function renderBookmarksWidget() {
@@ -588,6 +696,16 @@ function wireGlobalEvents() {
         refreshProgressModal();
         openModal('progress-modal');
         break;
+      case 'open-sync':
+        syncStatus = null;
+        refreshSyncModal();
+        openModal('sync-modal');
+        break;
+      case 'sync-overwrite': {
+        const code = document.getElementById('sync-code')?.value.trim();
+        handleSyncOverwrite(code);
+        break;
+      }
       case 'close-modal':
         closeModals();
         break;
@@ -639,6 +757,10 @@ function wireGlobalEvents() {
       if (yearId && subjectId) store.unpassSubject(yearId, subjectId);
       render();
       refreshProgressModal();
+    } else if (e.target.id === 'sync-form') {
+      e.preventDefault();
+      const code = document.getElementById('sync-code').value.trim();
+      handleSyncSubmit(code);
     } else if (e.target.id === 'day-exam-form') {
       e.preventDefault();
       const title = document.getElementById('day-exam-subject').value.trim();

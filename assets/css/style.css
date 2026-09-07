@@ -178,6 +178,8 @@ svg.nav-icon { width: 16px; height: 16px; flex: none; display: inline-block; ver
 
 .nav-link.year-link { font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; font-size: 11.5px; }
 
+button.nav-link { background: none; border: none; width: 100%; text-align: left; cursor: pointer; font-family: inherit; }
+
 .nav-link .nav-badge {
   margin-left: auto;
   font-size: 10px;
@@ -572,6 +574,22 @@ textarea.input { height: auto; padding: 8px 9px; }
 }
 
 .day-modal-date { font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 10px; }
+
+.sync-warning {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  margin-bottom: 12px;
+}
+.sync-status { font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+.sync-status.is-ok { color: var(--success); }
+.sync-status.is-error { color: var(--danger); }
+.sync-actions { display: flex; gap: 8px; }
+.sync-actions > * { flex: 1; }
+.sync-divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
 
 .exam-list { display: flex; flex-direction: column; gap: 1px; max-height: 220px; overflow-y: auto; }
 .exam-row {
