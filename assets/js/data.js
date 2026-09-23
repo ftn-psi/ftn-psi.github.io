@@ -115,6 +115,13 @@ export const YEARS = [
         },
       },
       {
+        id: 'engleski za inzinjere',
+        title: 'Engleski za Inzinjere',
+        credits: 3,
+        advice: 'Skoro identicno kao i engleski s tim da se koriste rijeci koje se mogu pojaviti u struci.',
+        categories: { emptyCategories() },
+      },
+      {
         id: 'arhitektura',
         title: 'Arhitektura računara',
         credits: 9,
