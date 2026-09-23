@@ -115,11 +115,20 @@ export const YEARS = [
         },
       },
       {
-        id: 'engleski za inzinjere',
-        title: 'Engleski za Inzinjere',
+        id: 'engleski_za_inzinjere',
+        title: 'Engleski za inžinjere',
         credits: 3,
-        advice: 'Skoro identicno kao i engleski s tim da se koriste rijeci koje se mogu pojaviti u struci.',
-        categories: { emptyCategories() },
+        advice: 'Skoro identično kao i engleski s tim da se koriste riječi koje se mogu pojaviti u struci, te mozete koristiti iste izvore kao i za engleski.',
+        categories: {
+          skripte: [],
+          video: [
+            { title: 'Engleski za inženjere', url: 'https://www.youtube.com/playlist?list=PLowrC7vBU9IpvhqMa6UTNdHihn8mfLi1g', note: '2020/2021' },
+          ],
+          vezbe: [
+            { title: 'Vežbe', url: 'http://www.english-practice.at/', note: '2024/2025' },
+          ],
+          dodatno: [],
+        },
       },
       {
         id: 'arhitektura',
