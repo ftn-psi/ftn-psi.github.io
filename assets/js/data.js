@@ -64,10 +64,9 @@ export const YEARS = [
           ],
           vezbe: [
             {
-              title: 'Vežbe',
-              url: 'https://www.youtube.com/playlist?list=PLowrC7vBU9IqnK-LLthVyo_2gH7SKptsf',
+              title: 'Neispunjeni testovi teorije sa rokova',
+              url: 'assets/downloads/44 рока теорије празно.pdf',
               note: '2020/2021',
-              extra: [{ title: 'Neispunjeni testovi teorije sa rokova', url: 'assets/downloads/44 рока теорије празно.pdf' }],
             },
             { title: 'Zadaci i rešenja sa testova', url: 'https://www.ktet.ftn.uns.ac.rs/index.php?option=com_content&task=category&sectionid=41&id=240&showtitle=1&part=nastava', note: '2024/2025' },
           ],
@@ -80,21 +79,22 @@ export const YEARS = [
         id: 'pjisp',
         title: 'Programski jezici i strukture podataka',
         credits: 9,
-        advice: 'Pošto se na vežbama i predavanjima ide veoma brzo, preporučuje se, ako znate engleski, da preletite C deo kursa iz CS50 (od lekcije 1 do 5).',
+        advice: 'Spremajte zadatke sa skripte za zadatke, ako predjete sve to uradicete bez greske.',
         categories: {
           skripte: [
-            { title: 'Sve što je potrebno za vežbanje', url: 'https://programski-jezici-i-strukture-podataka.github.io/zbirka-zadataka/index.html', note: '2021/2022' },
+            { title: 'PJISP ZADACI', url: 'https://programski-jezici-i-strukture-podataka.github.io/zbirka-zadataka/index.html', note: '2021/2022' },
           ],
           video: [
             { title: 'Skidanje Ubuntu-a', url: 'https://www.youtube.com/watch?v=zq9yY0JoHr0', note: '2015/2016' },
             { title: 'Sa predavanja', url: 'https://www.youtube.com/playlist?list=PLowrC7vBU9IrPWgcaGHrl4RCE5vH0BNoc', note: '2020/2021' },
             { title: 'Sa vežbi', url: 'https://www.youtube.com/playlist?list=PLowrC7vBU9IrbpC_L6_ZDz6giLC5aMarS', note: '2020/2021' },
           ],
-          vezbe: [],
+          vezbe: [
+            { title: 'CS50 kurs (C deo)', url: 'https://www.youtube.com/watch?v=cwtpLIWylAw&list=PLhQjrBD2T381WAHyx1pq-sBfykqMBI7V4&index=2', note: 'za one koji zele vise' },
+          ],
           dodatno: [
             { title: 'Fajl koji može pripomoći za teoriju i pripremu', url: 'https://drive.google.com/drive/folders/1y2CdByJSZ_-olnmOqdU49GbksylWV9nA', note: '2021/2022' },
             { title: 'Zvanični sajt katedre za primenjene računarske nauke', url: 'https://www.acs.uns.ac.rs/', note: '2021/2022' },
-            { title: 'CS50 kurs (C deo)', url: 'https://www.youtube.com/watch?v=cwtpLIWylAw&list=PLhQjrBD2T381WAHyx1pq-sBfykqMBI7V4&index=2', note: 'preporuka' },
           ],
         },
       },
@@ -202,7 +202,7 @@ export const YEARS = [
             { title: 'Sa vežbi', url: 'https://www.youtube.com/playlist?list=PLowrC7vBU9Iqs12qG1h3pPkt_Ak-FiWry', note: '2020/2021' },
           ],
           vezbe: [
-            { title: 'Primeri i zadaci sa vežbi', url: 'https://www.eepsi.ftn.uns.ac.rs/group/uvod-u-algoritme/custom', note: 'up to date' },
+            { title: 'Primeri i zadaci sa vežbi', url: 'https://www.eepsi.ftn.uns.ac.rs/group/uvod-u-algoritme/custom', note: '2024/2025' },
           ],
           dodatno: [
             { title: 'Sajt za UUA', url: 'https://www.eepsi.ftn.uns.ac.rs/group/uvod-u-algoritme/discussion', note: '' },
@@ -217,11 +217,105 @@ export const YEARS = [
     label: 'Druga godina',
     short: 'II',
     subjects: [
-      { id: 'diskretna', title: 'Diskretna matematika', credits: 4, categories: emptyCategories() },
-      { id: 'oee', title: 'Osnove elektroenergetike', credits: 6, categories: emptyCategories() },
-      { id: 'oop', title: 'Objektno orijentisano programiranje', credits: 8, categories: emptyCategories() },
-      { id: 'lprs', title: 'Logičko projektovanje računarskih sistema', categories: emptyCategories() },
-      { id: 'algoritmi2', title: 'Primenjeni algoritmi', credits: 6, categories: emptyCategories() },
+      { 
+        id: 'diskretna', 
+        title: 'Diskretna matematika', 
+        credits: 4, 
+        advice: 'Biti opsiran i detaljan tokom kolokvijuma, najlakse je vjezbati preko starih rokova jer cesto ponavljaju.',
+        categories: {
+          skripte: [
+            { title: 'PDF za Kombinatoriku', url: 'assets/downloads/Kombinatorika.pdf', note: '2025/2026' },
+            { title: 'PDF za Grafove', url: 'assets/downloads/Grafovi.pdf', note: '2025/2026' },
+          ],
+          video: [
+            { title: 'Sa vežbi', url: 'https://www.youtube.com/watch?v=8aNIcn4tv14&list=PLLj7psylV8YzL8gWUn8DVy8Rbdq4_WrCP&index=3', note: '2020/2021' },
+          ],
+          vezbe: [
+            { title: 'Primeri i zadaci sa vežbi', url: 'https://drive.google.com/drive/folders/1dG0zd58H5V-n0Po_dhawV-ddf0obTxmC', note: '2025/2026' },
+          ],
+          dodatno: [
+            { title: 'Sajt za DM', url: 'https://sites.google.com/view/dm-ftn/dm-pr?authuser=0', note: '' },
+            { title: 'Primeri sa kolokvijuma', url: 'https://drive.google.com/drive/folders/1Zw-B0L_O_IeNRorZihhtSotQeGhpuTV3', note: '' },
+          ],
+        },
+      },
+      { 
+        id: 'oee', 
+        title: 'Osnove elektroenergetike', 
+        credits: 6, 
+        advice: '* dodacu savet kada polozim predmet :/ *',
+        categories: {
+          skripte: [
+            { title: 'Zadaci', url: 'https://drive.google.com/drive/folders/1T_dvEDAGMGlbFL8G2nHmvhc0v4NPGf2j', note: '2024/2025' },
+            { title: 'Skripte', url: 'https://drive.google.com/drive/folders/1HtoLsXbN7R2xGEjKYopBa1wi2u7q_ERj', note: '2024/2025' },
+          ],
+          video: [
+            { title: 'Sa vežbi', url: 'https://www.youtube.com/watch?v=Val2aPsIDuQ&list=PLLj7psylV8YyEzapXAKTIt_6Ao1K5W6lQ', note: '2020/2021' },
+          ],
+          vezbe: [
+            { title: 'Primeri i zadaci sa vežbi', url: 'https://drive.google.com/drive/folders/1JwMxnGNyz_6LvX5OzciopeiPNfsq3vRd', note: '2024/2025' },
+          ],
+          dodatno: [
+            { title: 'Knjiga za EES', url: 'assets/downloads/EES-knjiga.pdf', note: '2024/2025' },
+          ],
+        },
+      },
+      { 
+        id: 'oop', 
+        title: 'Objektno orijentisano programiranje', 
+        credits: 8, 
+        advice: 'Veoma je sablonski predmet samo je bitno proci par puta zadatke.',
+        categories: {
+          skripte: [
+            { title: 'Teorija', url: 'https://drive.google.com/drive/folders/15UCMid-GO0J_f1bTlGh8Ybnxn1jEtOie', note: '2024/2025'},
+          ],
+          video: [
+            { title: 'Sa vežbi', url: 'https://www.youtube.com/watch?v=WpTC7VphAmA&list=PLLj7psylV8YxZPEiWjN7Rseqcr9RZ7EB2', note: '2020/2021' },
+          ],
+          vezbe: [
+            { title: 'Zadaci za vjezbu', url: 'https://drive.google.com/drive/folders/15P7a78AnkPiG5o9zfr0RBEzYmOOB23JO', note: '2024/2025' },
+          ],
+          dodatno: [
+            { title: 'Knjige', url: 'https://drive.google.com/drive/folders/1Gmzp96RlcfcIMEFbHYbVD_ZvkntRKsMl', note: '2024/2025' },
+            { title: 'Sajt OOP-a', url: 'https://www.acs.uns.ac.rs/sr/oop', note: '2024/2025'},
+          ],
+        },
+      },
+      { 
+        id: 'lprs', 
+        title: 'Logičko projektovanje računarskih sistema', 
+        advice: 'Nemojte zapostavljati vjezbe, bez redovnog dolaska na njih je dosta teze ispratiti predmet i poloziti ga.',
+        categories: {
+          skripte: [
+            { title: 'Teorija', url: 'https://drive.google.com/drive/folders/1WPWsowT_wWnTdaSUofKCUkm52RzSxZnU', note: '2024/2025'},
+            { title: 'Domaci', url: 'https://drive.google.com/drive/folders/1ozZYyBjgkzeuFIQRiPeg84msBbXG_5LO', note: '2024/2025'},
+            { title: 'Sveska', url: 'https://drive.google.com/drive/folders/1G1pL3VedSEeNz2G4cgsqs3dxYjse9JqA', note: '2024'},
+          ],
+          video: [
+            { title: 'Sa vežbi', url: 'https://www.youtube.com/watch?v=Rq9T9-pBHLQ&list=PLLj7psylV8YxzJnxmWqNSyJvmIunm_G1h', note: 'treba dosta strpljenja...' },
+          ],
+          vezbe: [
+            { title: 'Zadaci za vjezbu', url: 'https://drive.google.com/drive/folders/10dfWrRbKWjdMl6mzyzh_IwUA1IKpWAM5', note: '2024/2025' },
+          ],
+          dodatno: [
+            { title: 'Program za LPRS', url: 'https://www.altera.com/downloads/fpga-development-tools/quartus-prime-lite-edition-design-software-version-24-1-windows', note: '2024/2025' },
+          ],
+        },
+      },
+      { 
+        id: 'algoritmi2', 
+        title: 'Primenjeni algoritmi', 
+        credits: 6, 
+        advice: 'Izuzetno sablonski predmet, imate sve sto vam treba za vezbu na njihovom sajtu, dobro spremite algoritme koje traze od vas.',
+        categories: {
+          skripte: [],
+          video: [],
+          vezbe: [],
+          dodatno: [
+            { title: 'Sajt za Primenjene Algoritme', url: 'https://www.eepsi.ftn.uns.ac.rs/group/primenjeni-algoritmi/discussion', note: '2025/2026' },
+          ],
+        },
+      },
       { id: 'os', title: 'Operativni sistemi', credits: 8, categories: emptyCategories() },
       { id: 'nrs', title: 'Namenski računarski sistemi', categories: emptyCategories() },
       { id: 'oot', title: 'Objektno orijentisane tehnologije', credits: 5, categories: emptyCategories() },
