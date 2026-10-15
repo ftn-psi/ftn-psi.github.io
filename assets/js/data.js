@@ -316,10 +316,45 @@ export const YEARS = [
           ],
         },
       },
-      { id: 'os', title: 'Operativni sistemi', credits: 8, categories: emptyCategories() },
-      { id: 'nrs', title: 'Namenski računarski sistemi', categories: emptyCategories() },
+      { 
+        id: 'os', 
+        title: 'Operativni sistemi', 
+        credits: 8, 
+        advice: 'Ne propustati vjezbe, predmet se jako brzo zakomplikuje i tesko da cete stici ako odsustvujete jer ima jako malo materijala van vjezbi.',
+        categories: {
+          skripte: [
+            { title: 'Skripta sa ispitima i zadacima', url: 'https://drive.google.com/drive/folders/1lYmhotFnhDKPldDLJqAcs8hr_7Lb-FKP', note: '2024/2025' },
+          ],
+          video: [
+            { title: 'Sa vjezbi', url: 'https://www.youtube.com/watch?v=-dH3WJM0PxA&list=PLLj7psylV8YzpM3FxGqkLyQh_BEUYGcve&index=2&ab_channel=Nemogucejesamorec', note: '2020/2021'},
+          ],
+          vezbe: [],
+          dodatno: [
+            { title: 'Sajt od OS-a', url: 'https://www.acs.uns.ac.rs/sr/os', note: '2025/2026' },
+          ],
+        }
+      },
+      { 
+        id: 'nrs', 
+        title: 'Namenski računarski sistemi', 
+        credits: 8,
+        advice: 'Usmeni je najtezi dio predmeta, vecina pitanja je u skripti.',
+        categories: {
+          skripte: [
+            { title: 'Skripta sa pitanjima za usmeni i zadacima', url: 'https://drive.google.com/drive/folders/1Pwon5Xzy4glqghlm4rY_UQl9d2KuG_DO', note: '2024/2025' },
+          ],
+          video: [
+            { title: 'Sa vjezbi', url: 'https://www.youtube.com/watch?v=oMGidYa-Dzw&list=PLLj7psylV8YxDsoRMVqnhVHpv29RATo6b&index=4', note: '2020/2021'},
+          ],
+          vezbe: [],
+          dodatno: [
+            { title: 'Sajt od OS-a', url: 'https://www.eepsi.ftn.uns.ac.rs/group/namenski-racunarski-sistemi/custom', note: '2025/2026' },
+            { title: 'Arduino IDE', url: 'https://www.arduino.cc/en/software/', note: '2025/2026'}
+          ],
+        } 
+      },
       { id: 'oot', title: 'Objektno orijentisane tehnologije', credits: 5, categories: emptyCategories() },
-      { id: 'optimizacija', title: 'Metodi optimizacije', categories: emptyCategories() },
+      { id: 'optimizacija', title: 'Metodi optimizacije', credits: 4, categories: emptyCategories() },
       { id: 'fluid', title: 'Sistemi za transport i distribuciju fluida', credits: 5, categories: emptyCategories() },
     ],
   },
