@@ -365,10 +365,36 @@ export const YEARS = [
     short: 'III',
     subjects: [
       { id: 'prevodioci', title: 'Programski prevodioci', credits: 4, categories: emptyCategories() },
+      { 
+        id: 'prevodioci', 
+        title: 'Programski prevodioci', 
+        credits: 4, 
+        advice: 'Pratite redovno, radite predispitne i polažite u roku, profesor je nagovestio da je polaganje u suprotnom jako teško.',
+        categories: {
+          skripte: [],
+          video: [],
+          vezbe: [],
+          dodatno: [
+            { title: 'Teams', url: 'https://teams.cloud.microsoft/l/team/19%3Ax0xoBwPKiIMyH38YYrI5cfia5n67V08PP0Qf3SMIDxA1%40thread.tacv2/conversations?groupId=404383a1-f461-46b2-b04e-0b397d8a8299&tenantId=ada575f6-4e91-4d1d-aa89-9b2d9f5810e3', note: 'svi materijali i obaveštenja' },
+          ],
+        }
+      },
       { id: 'baze', title: 'Uvod u baze podataka', credits: 8, categories: emptyCategories() },
       { id: 'modeliranje', title: 'Modeliranje i simulacija sistema', credits: 8, categories: emptyCategories() },
       { id: 'ers', title: 'Elementi razvoja softvera', credits: 4, categories: emptyCategories() },
-      { id: 'mreze', title: 'Primena računarskih mreža', credits: 6, categories: emptyCategories() },
+      { 
+        id: 'mreze', 
+        title: 'Primena računarskih mreža', 
+        credits: 6, 
+        categories: {
+          skripte: [],
+          video: [],
+          vezbe: [],
+          dodatno: [
+            { title: 'Sajt predmeta', url: 'https://www.eepsi.ftn.uns.ac.rs/group/primena-racunarskih-mreza-u-infrastrukturnim-sis', note: 'Svi materijali, vežbe i obaveštenja' },
+          ],
+        }
+      },
       { id: 'odp', title: 'Osnove distributivnog programiranja', credits: 6, categories: emptyCategories() },
       { id: 'aus', title: 'Akvizicioni upravljački sistemi', credits: 6, categories: emptyCategories() },
       { id: 'vp', title: 'Virtuelizacija procesa', credits: 6, categories: emptyCategories() },
