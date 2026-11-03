@@ -59,7 +59,7 @@ FTN PSI
     +-- Predmet
 ```
 
-Sadržaj se dodaje i menja kako bi se što više materijala nalazilo na jednom mestu.
+Sadržaj se dodaje i mijenja kako bi se što više materijala nalazilo na jednom mestu.
 
 ## Doprinos
 
@@ -74,10 +74,6 @@ Možete poslati i materijale na:
 Materijali su prikupljeni iz različitih izvora i od različitih generacija studenata. Zbog toga neki materijali mogu biti zastareli ili se odnositi na stariji nastavni program.
 
 Za zvanične informacije o predmetima, ispitima i nastavnom programu treba proveriti zvanične izvore FTN-a.
-
-## Licenca
-
-Projekat je objavljen pod The Unlicense licencom.
 
 ## Linkovi
 
