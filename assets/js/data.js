@@ -364,7 +364,6 @@ export const YEARS = [
     label: 'Treća godina',
     short: 'III',
     subjects: [
-      { id: 'prevodioci', title: 'Programski prevodioci', credits: 4, categories: emptyCategories() },
       { 
         id: 'prevodioci', 
         title: 'Programski prevodioci', 
