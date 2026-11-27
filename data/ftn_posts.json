@@ -1,16 +1,9 @@
 [
   {
-    "title": "Četvrti konkursni rok za upis na doktorske akademske studije",
-    "url": "https://ftn.uns.ac.rs/cetvrti-konkursni-rok-za-upis-na-doktorske-akademske-studije/",
+    "title": "Četvrti konkursni rok za upis na master akademske, master strukovne, specijalističke akademske i doktorske akademske studije",
+    "url": "https://ftn.uns.ac.rs/cetvrti-konkursni-rok-za-upis/",
     "date": "26.11.2026",
-    "excerpt": "Obaveštavamo sve zainteresovane da je raspisan Konkurs za četvrti rok za upis na doktorske akademske studije na Fakultetu tehničkih nauka. Tekst konkursa možete pogledati u nastavku: Konkurs za doktorske studije – IV rok",
-    "image": "https://ftn.uns.ac.rs/wp-content/uploads/2026/10/KONKURS-768x461.jpg"
-  },
-  {
-    "title": "Četvrti konkursni rok za upis na master akademske, master strukovne i specijalističke akademske studije",
-    "url": "https://ftn.uns.ac.rs/cetvrti-konkursni-rok-za-upis-na-master-akademske-master-strukovne-i-specijalisticke-akademske-studije/",
-    "date": "26.11.2026",
-    "excerpt": "Obaveštavamo sve zainteresovane da je raspisan Konkurs za četvrti rok za upis na master akademske, master strukovne studije i specijalističke akademske studije na Fakultetu tehničkih nauka. Tekstove konkursa možete pogle",
+    "excerpt": "Obaveštavamo sve zainteresovane da je raspisan Konkurs za četvrti rok za upis na master akademske, master strukovne, specijalističke akademske i doktorske akademske studije na Fakultetu tehničkih nauka. Tekstove konkursa",
     "image": "https://ftn.uns.ac.rs/wp-content/uploads/2026/10/KONKURS-768x461.jpg"
   },
   {
@@ -40,5 +33,12 @@
     "date": "18.11.2026",
     "excerpt": "Elixir Group otvara novi konkurs za BOOST stipendiju u iznosu od 400.000 dinara neto, koja se isplaćuje kroz 9 mesečnih rata, počev od februara 2027. godine. Stipendija je namenjena studentima završne godine osnovnih i m",
     "image": "https://ftn.uns.ac.rs/wp-content/uploads/2026/11/STIPENDIJA-768x461.png"
+  },
+  {
+    "title": "Predavanje za studente – kompanija Quectel",
+    "url": "https://ftn.uns.ac.rs/predavanje-za-studente-kompanija-engquectel-eng/",
+    "date": "18.11.2026",
+    "excerpt": "Upoznajte razvoj IoT-a i njegove praktične primene – od pametnih gradova i praćenja imovine do industrijskog monitoringa. Biće predstavljene osnove Cellular i GNSS IoT sistema, end-to-end arhitektura i tok podataka od ur",
+    "image": "https://ftn.uns.ac.rs/wp-content/uploads/2026/11/PREDAVANJE-768x461.jpg"
   }
 ]
